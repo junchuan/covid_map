@@ -148,4 +148,6 @@
     ol.control.LayerSwitcher.renderPanel(map, toc);
     map.addControl(sidebar);
 
+
+
 })();
