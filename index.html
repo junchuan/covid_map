@@ -12,7 +12,7 @@
   <link rel="stylesheet" href="src/ol-layerswitcher.css" />
   <link rel="stylesheet" href="sidebar.css" />
 
-  
+
   <link rel="stylesheet" href="https://unpkg.com/ol-popup@4.0.0/src/ol-popup.css" />
   <!-- <link rel="stylesheet" href="popup.css" /> -->
 </head>
@@ -65,10 +65,80 @@
     font-family: Arial, Helvetica, sans-serif;
     color: white;
     text-shadow:
-    -1px -1px 0 #951022,
-    1px -1px 0 #951022,
-    -1px 1px 0 #951022,
-    1px 1px 0 #951022;  
+      -1px -1px 0 #951022,
+      1px -1px 0 #951022,
+      -1px 1px 0 #951022,
+      1px 1px 0 #951022;
+  }
+
+  .ol-popup {
+    border-radius: 10px;
+    display: none;
+    position: absolute;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+    opacity: 0.9;
+    background-color: #F6F6F6;
+    padding: 15px 25px 15px 15px;
+    border: 3px solid #951022;
+    bottom: 12px;
+    left: -50px;
+    text-decoration-color: #951022;
+
+  }
+
+  .ol-popup:after,
+  .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+
+  }
+
+  .ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    border: 1px solid #951022;
+    margin-left: -10px;
+  }
+
+  .ol-popup:before {
+    border-top-color: #951022;
+    border-width: 15px;
+    left: 48px;
+    margin-left: -11px;
+  }
+
+  .ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+  }
+
+  .ol-popup-closer:after {
+    content: "✖";
+    color: #951022;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 3px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  tr:hover {
+    background-color: lightgray;
   }
 </style>
 
@@ -106,8 +176,12 @@
 
       <div class="sidebar-pane" id="profile">
         <h1 class="sidebar-header">About<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
-        <p style="font-size:15px">This map shows the weighted percentage of survey respondents that have reported CLI and also the seven-day rolling average values for the CLI values.</p>
-        <p style="font-size:15px">Data calculated based on the Facebook global symptoms survey data. Using the survey data, we estimate the percentage of people in a given country or region, on a given day that have CLI (covid-like illness = fever, along with cough, or shortness of breath, or difficulty breathing). The weight of each survey response is provided by Facebook.</p>
+        <p style="font-size:15px">This map shows the weighted percentage of survey respondents that have reported CLI
+          and also the seven-day rolling average values for the CLI values.</p>
+        <p style="font-size:15px">Data calculated based on the Facebook global symptoms survey data. Using the survey
+          data, we estimate the percentage of people in a given country or region, on a given day that have CLI
+          (covid-like illness = fever, along with cough, or shortness of breath, or difficulty breathing). The weight of
+          each survey response is provided by Facebook.</p>
 
 
       </div>
@@ -116,7 +190,7 @@
           <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
         </div>
      -->
-        <!--  
+      <!--  
       <div class="sidebar-pane" id="settings">
         <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
       </div>
@@ -124,11 +198,11 @@
     </div>
   </div>
   <!-- END OF SIDEBAR DIV -->
-  
 
-  
+
+
   <div id="map" class="sidebar-map">
-  <!-- <div id="popup" class="ol-popup">
+    <!-- <div id="popup" class="ol-popup">
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <div id="popup-content"></div>
   </div>   -->
@@ -138,7 +212,7 @@
       </img>
     </div>
     <div id="title">
-      <p class = "big" style="font-size:21px"><b>COVID-19 World Survey Map</b></p>
+      <p class="big" style="font-size:21px"><b>COVID-19 World Survey Map</b></p>
 
     </div>
     <div id="legende">
@@ -156,7 +230,7 @@
 
   </div>
 
-  
+
 
 
 

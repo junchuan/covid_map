@@ -188,6 +188,7 @@
       { INFO_FORMAT: "text/html" }
     );
 
+     
     // console.log(url);
     if (url) {
       fetch(url)
@@ -216,12 +217,39 @@
 
           if (td_list.length > 0) {
             for (i = 1; i < td_list.length; i++) {
-              res_html +=
-                "<tr><td>" +
+
+              if(i==3 || i ==4)
+              {
+                // formatt values to percentage
+                res_html +=
+                "<tr><td><b>" +
                 th_list[i] +
-                ": </td><td>" +
+                "</b>: </td><td>" +
+                (td_list[i]*100).toFixed(2) +" %"+
+                "</td></tr>";
+              }
+              else if(i == 6){
+
+                // formatt date
+                surveydate  = new Date(td_list[i])
+                res_html +=
+                "<tr><td><b>" +
+                th_list[i] +
+                "</b>: </td><td>" +
+                surveydate.toLocaleDateString("en-US")+
+                "</td></tr>";
+
+              }
+              else{ 
+
+                res_html +=
+                "<tr><td><b>" +
+                th_list[i] +
+                "</b>: </td><td>" +
                 td_list[i] +
                 "</td></tr>";
+
+              }
             }
             res_html += "</table>";
             popup.show(evt.coordinate, res_html);
