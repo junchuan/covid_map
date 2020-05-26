@@ -215,7 +215,7 @@
           }
           console.log(td_list);
 
-          if (td_list.length > 0) {
+          if (td_list.length == 7) {
             for (i = 1; i < td_list.length; i++) {
 
               if(i==3 || i ==4)
@@ -253,7 +253,49 @@
             }
             res_html += "</table>";
             popup.show(evt.coordinate, res_html);
-          } else {
+          } 
+          else if (td_list.length == 8)
+          {
+            for (i = 1; i < td_list.length; i++) {
+
+              if(i==4 || i ==5)
+              {
+                // formatt values to percentage
+                res_html +=
+                "<tr><td><b>" +
+                th_list[i] +
+                "</b>: </td><td>" +
+                (td_list[i]*100).toFixed(2) +" %"+
+                "</td></tr>";
+              }
+              else if(i == 7){
+
+                // formatt date
+                surveydate  = new Date(td_list[i])
+                res_html +=
+                "<tr><td><b>" +
+                th_list[i] +
+                "</b>: </td><td>" +
+                surveydate.toLocaleDateString("en-US")+
+                "</td></tr>";
+
+              }
+              else{ 
+
+                res_html +=
+                "<tr><td><b>" +
+                th_list[i] +
+                "</b>: </td><td>" +
+                td_list[i] +
+                "</td></tr>";
+
+              }
+            }
+            res_html += "</table>";
+            popup.show(evt.coordinate, res_html);
+
+          }
+          else {
             popup.hide();
           }
         });
