@@ -1,6 +1,8 @@
 import Control from 'ol/control/Control';
 import { unByKey } from 'ol/Observable';
 
+
+
 var CSS_PREFIX = 'layer-switcher-';
 
 /**

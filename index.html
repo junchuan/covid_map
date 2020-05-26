@@ -11,6 +11,10 @@
   <link rel="stylesheet" href="src/main.css" />
   <link rel="stylesheet" href="src/ol-layerswitcher.css" />
   <link rel="stylesheet" href="sidebar.css" />
+
+  
+  <link rel="stylesheet" href="https://unpkg.com/ol-popup@4.0.0/src/ol-popup.css" />
+  <!-- <link rel="stylesheet" href="popup.css" /> -->
 </head>
 
 <style>
@@ -120,8 +124,15 @@
     </div>
   </div>
   <!-- END OF SIDEBAR DIV -->
+  
 
+  
   <div id="map" class="sidebar-map">
+  <!-- <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+  </div>   -->
+
     <div id="logo">
       <img src="https://geospatial.umd.edu/themes/custom/bsos_bootstrap/images/umd-globe.svg">
       </img>
@@ -143,8 +154,10 @@
     </div>
   </div>
 
-
   </div>
+
+  
+
 
 
 
@@ -163,6 +176,7 @@
     }
   </script>
   <script src="https://rawgit.com/Turbo87/sidebar-v2/master/js/ol3-sidebar.js"></script>
+  <script src="https://unpkg.com/ol-popup@4.0.0"></script>
   <script src="dist/ol-layerswitcher.js"></script>
   <script src="sidebar.js"></script>
 </body>
