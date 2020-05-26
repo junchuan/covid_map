@@ -179,6 +179,8 @@
         //     singleTile: true
       },
       url: "https://gsweb2.umd.edu/geoserver/covidmap/wms",
+      serverType: "geoserver",
+      crossOrigin: 'anonymous'
     });
 
     var url = agg_source.getFeatureInfoUrl(
