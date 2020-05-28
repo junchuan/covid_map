@@ -1,54 +1,14 @@
 (function () {
-
-  var BASE_URL="https://covidmap.umd.edu/geoserver/covidmap/wms";
-
   var country_agg_source = new ol.source.TileWMS({
     // ratio: 1,
     //  singleTile: true,
     params: {
-      LAYERS: "covidmap:country_agg_view_prod",
+      LAYERS: "covidmap:country_agg_view",
       styles: "new_living",
       //     singleTile: true
     },
-    url: BASE_URL,
+    url: "https://gsweb2.umd.edu/geoserver/covidmap/wms",
   });
-
-var smooth_country_agg_source=new ol.source.TileWMS({
-  //  maxZoom: 2,
-  //  ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:smooth_country_agg_view_prod",
-    styles: "new_smoothed",
-    //  singleTile: true
-  },
-  url: BASE_URL,
-});
-
-var region_agg_source=new ol.source.TileWMS({
-  // ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:region_agg_view_prod",
-    styles: "new_living",
-    //     singleTile: true
-  },
-  url: BASE_URL,
-});
-
-var smooth_region_agg_source=new ol.source.TileWMS({
-  //  maxZoom: 2,
-  //  ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:smooth_region_agg_view_prod",
-    styles: "new_smoothed",
-    //  singleTile: true
-  },
-  url: BASE_URL,
-});
-
-
 
   var map = new ol.Map({
     target: "map",
@@ -110,7 +70,17 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 title: "Smoothed",
                 maxZoom: 4,
                 opacity: 0.5,
-                source: smooth_country_agg_source
+                source: new ol.source.TileWMS({
+                  //  maxZoom: 2,
+                  //  ratio: 1,
+                  //  singleTile: true,
+                  params: {
+                    LAYERS: "covidmap:smooth_country_agg_view",
+                    styles: "new_smoothed",
+                    //  singleTile: true
+                  },
+                  url: "https://gsweb2.umd.edu/geoserver/covidmap/wms",
+                }),
               }),
             ],
           }),
@@ -124,14 +94,33 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 title: "Live estimates",
                 minZoom: 4,
                 opacity: 0.7,
-                source: region_agg_source
+                source: new ol.source.TileWMS({
+                  // ratio: 1,
+                  //  singleTile: true,
+                  params: {
+                    LAYERS: "covidmap:region_agg_view",
+                    styles: "new_living",
+                    //     singleTile: true
+                  },
+                  url: "https://gsweb2.umd.edu/geoserver/covidmap/wms",
+                }),
               }),
               new ol.layer.Tile({
                 // A layer must have a title to appear in the layerswitcher
                 title: "Smoothed",
                 minZoom: 4,
                 opacity: 0.7,
-                source: smooth_region_agg_source
+                source: new ol.source.TileWMS({
+                  //  maxZoom: 2,
+                  //  ratio: 1,
+                  //  singleTile: true,
+                  params: {
+                    LAYERS: "covidmap:smooth_region_agg_view",
+                    styles: "new_smoothed",
+                    //  singleTile: true
+                  },
+                  url: "https://gsweb2.umd.edu/geoserver/covidmap/wms",
+                }),
               }),
             ],
           }),
@@ -189,7 +178,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
         styles: style_name,
         //     singleTile: true
       },
-      url: BASE_URL,
+      url: "https://gsweb2.umd.edu/geoserver/covidmap/wms",
       serverType: "geoserver",
       crossOrigin: 'anonymous'
     });
