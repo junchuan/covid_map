@@ -210,7 +210,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           return response.text();
         })
         .then(function (html) {
-          console.log(html);
+          // console.log(html);
           var el = document.createElement("html");
           el.innerHTML = html;
 
@@ -220,13 +220,13 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           for (th of el.getElementsByTagName("th")) {
             th_list.push(th.innerText);
           }
-          console.log(th_list);
+          // console.log(th_list);
 
           td_list = [];
           for (td of el.getElementsByTagName("td")) {
             td_list.push(td.innerText);
           }
-          console.log(td_list);
+          // console.log(td_list);
 
           if (td_list.length == 7) {
             for (i = 1; i < td_list.length; i++) {
