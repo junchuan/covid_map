@@ -103,6 +103,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 title: "Live estimates",
                 maxZoom: 4,
                 opacity: 0.5,
+                visible: false,
                 source: country_agg_source,
               }),
               new ol.layer.Tile({
@@ -124,6 +125,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 title: "Live estimates",
                 minZoom: 4,
                 opacity: 0.7,
+                visible: false,
                 source: region_agg_source
               }),
               new ol.layer.Tile({
