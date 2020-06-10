@@ -13,19 +13,6 @@
     url: BASE_URL,
   });
 
-  
-  var country_agg_source_unw = new ol.source.TileWMS({
-    // ratio: 1,
-    //  singleTile: true,
-    params: {
-      LAYERS: "covidmap:country_agg_view_prod",
-      styles: "new_living_unw",
-      //     singleTile: true
-    },
-    url: BASE_URL,
-  });
-
-
 var smooth_country_agg_source=new ol.source.TileWMS({
   //  maxZoom: 2,
   //  ratio: 1,
@@ -44,18 +31,6 @@ var region_agg_source=new ol.source.TileWMS({
   params: {
     LAYERS: "covidmap:region_agg_view_prod",
     styles: "new_living",
-    //     singleTile: true
-  },
-  url: BASE_URL,
-});
-
-
-var region_agg_source_unw = new ol.source.TileWMS({
-  // ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:region_agg_view_prod",
-    styles: "new_living_unw",
     //     singleTile: true
   },
   url: BASE_URL,
@@ -128,16 +103,8 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 title: "Live estimates",
                 maxZoom: 4,
                 opacity: 0.5,
-                visible:false,
+                visible: false,
                 source: country_agg_source,
-              }),
-              new ol.layer.Tile({
-                // A layer must have a title to appear in the layerswitcher
-                title: "Live estimates(unweighted)",
-                maxZoom: 4,
-                opacity: 0.5,
-                visible:false,
-                source: country_agg_source_unw,
               }),
               new ol.layer.Tile({
                 // A layer must have a title to appear in the layerswitcher
@@ -158,16 +125,8 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 title: "Live estimates",
                 minZoom: 4,
                 opacity: 0.7,
-                visible:false,
+                visible: false,
                 source: region_agg_source
-              }),
-              new ol.layer.Tile({
-                // A layer must have a title to appear in the layerswitcher
-                title: "Live estimates(unweighted)",
-                minZoom: 4,
-                opacity: 0.7,
-                visible:false,
-                source: region_agg_source_unw
               }),
               new ol.layer.Tile({
                 // A layer must have a title to appear in the layerswitcher
@@ -263,13 +222,13 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           for (th of el.getElementsByTagName("th")) {
             th_list.push(th.innerText);
           }
-           console.log(th_list);
+          // console.log(th_list);
 
           td_list = [];
           for (td of el.getElementsByTagName("td")) {
             td_list.push(td.innerText);
           }
-           console.log(td_list);
+          // console.log(td_list);
 
           if (td_list.length == 7) {
             for (i = 1; i < td_list.length; i++) {
@@ -309,7 +268,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
             }
             res_html += "</table>";
             popup.show(evt.coordinate, res_html);
-          }
+          } 
           else if (td_list.length == 8)
           {
             for (i = 1; i < td_list.length; i++) {
@@ -325,88 +284,6 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 "</td></tr>";
               }
               else if(i == 7){
-
-                // formatt date
-                surveydate  = new Date(td_list[i])
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                surveydate.toLocaleDateString("en-US")+
-                "</td></tr>";
-
-              }
-              else{ 
-
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                td_list[i] +
-                "</td></tr>";
-
-              }
-            }
-            res_html += "</table>";
-            popup.show(evt.coordinate, res_html);
-
-          }
-          else if (td_list.length == 9)
-          {
-            for (i = 1; i < td_list.length; i++) {
-
-              if(i>=3 && i <=6)
-              {
-                // formatt values to percentage
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                (td_list[i]*100).toFixed(2) +" %"+
-                "</td></tr>";
-              }
-              else if(i == 8){
-
-                // formatt date
-                surveydate  = new Date(td_list[i])
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                surveydate.toLocaleDateString("en-US")+
-                "</td></tr>";
-
-              }
-              else{ 
-
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                td_list[i] +
-                "</td></tr>";
-
-              }
-            }
-            res_html += "</table>";
-            popup.show(evt.coordinate, res_html);
-
-          } 
-          else if (td_list.length == 10)
-          {
-            for (i = 1; i < td_list.length; i++) {
-
-              if(i>=4 && i <=7)
-              {
-                // formatt values to percentage
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                (td_list[i]*100).toFixed(2) +" %"+
-                "</td></tr>";
-              }
-              else if(i == 9){
 
                 // formatt date
                 surveydate  = new Date(td_list[i])
