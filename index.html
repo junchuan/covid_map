@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="src/main.css" />
   <link rel="stylesheet" href="src/ol-layerswitcher.css" />
   <link rel="stylesheet" href="sidebar.css" />
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
 
   <link rel="stylesheet" href="https://unpkg.com/ol-popup@4.0.0/src/ol-popup.css" />
@@ -75,7 +76,7 @@
     border-radius: 10px;
     display: none;
     position: absolute;
-    width: 210px;
+    width: 510px;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
     opacity: 0.9;
     background-color: #F6F6F6;
@@ -84,7 +85,6 @@
     bottom: 12px;
     left: -50px;
     text-decoration-color: #951022;
-
   }
 
   .ol-popup:after,
@@ -124,6 +124,16 @@
   .ol-popup-closer:after {
     content: "✖";
     color: #951022;
+  }
+
+  ::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 7px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: #949494;
   }
 
   table {
