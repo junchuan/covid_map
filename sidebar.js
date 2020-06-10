@@ -298,7 +298,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 var a = element.survey_date.toString();
                 var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
                 xl_covid.push(s);
-                yl_covid.push((element.smoothed_cli*100).toFixed(2));
+                yl_covid.push((element.smoothed_cli));
               });
               //Country Flu Trace
               Plotly.d3.json(url_flu, function(figure){
@@ -308,7 +308,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   var a = element.survey_date.toString();
                   var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
                   xl_flu.push(s);
-                  yl_flu.push((element.smoothed_ili*100).toFixed(2));
+                  yl_flu.push((element.smoothed_ili));
                 });
 
                 var trace_covid = {
@@ -317,7 +317,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   x: xl_covid,
                   y: yl_covid,
                   line: {color: '#F3BE95',
-                        width: 3,
+                        width: 2,
                         shape: 'spline',
                         smoothing: .15
                         }
@@ -329,7 +329,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   x: xl_flu,
                   y: yl_flu,
                   line: {color: '#95CAF3',
-                        width: 3,
+                        width: 2,
                         shape: 'spline',
                         smoothing: .15
                         }
@@ -339,6 +339,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
   
                 var layout = {
                   xaxis: {
+                    tickfont: {size: 6},
                     autorange: true,
                     rangeselector: {buttons: [
                       {
@@ -349,26 +350,24 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                       },
                       {step: 'all'}
                     ]},
-                    rangeslider: {autorange: true},
-                    type: 'date'
+                    type: 'date',
                   },
                   yaxis: {
-                    zeroline:false, 
-                    title: '%',
+                    tickformat: '.2%',
+                    tickfont: {size: 6},
                     autorange: true,
-                    type: 'linear'
+                    type: 'linear',
                   },
-                  width: 500,
-                  height: 300,
-                  plot_bgcolor:"#F0F0F5",
+                  legend: {"orientation": "h", x: .5, y:-1, 
+                    font: {
+                      size: 6,
+                    },
+                  },
+                  useResizeHandler: true,
+                  style: {width: "100%", height: "100%"},
+                  plot_bgcolor:"#F4F5F6",
                   paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 25,
-                    r: 15,
-                    b: 10,
-                    t: 60,
-                    pad: 1
-                  }
+                  margin: {l: 40, r: 10, b: 30, t: 30,pad: 1},
                 }
                 Plotly.newPlot('trend', traces, layout);
               })   
@@ -445,7 +444,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 var a = element.survey_date.toString();
                 var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
                 xl_covid.push(s);
-                yl_covid.push((element.smoothed_cli*100).toFixed(2));
+                yl_covid.push(element.smoothed_cli);
               });
               //Regional Flu Trace
               Plotly.d3.json(url_flu, function(figure){
@@ -455,7 +454,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   var a = element.survey_date.toString();
                   var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
                   xl_flu.push(s);
-                  yl_flu.push((element.smoothed_ili*100).toFixed(2));
+                  yl_flu.push(element.smoothed_ili);
                 });
 
                 var trace_covid = {
@@ -464,7 +463,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   x: xl_covid,
                   y: yl_covid,
                   line: {color: '#F3BE95',
-                        width: 3,
+                        width: 2,
                         shape: 'spline',
                         smoothing: .15
                         }
@@ -476,7 +475,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   x: xl_flu,
                   y: yl_flu,
                   line: {color: '#95CAF3',
-                        width: 3,
+                        width: 2,
                         shape: 'spline',
                         smoothing: .15
                         }
@@ -486,34 +485,35 @@ var smooth_region_agg_source=new ol.source.TileWMS({
   
                 var layout = {
                   xaxis: {
+                    tickfont: {size: 6},
                     autorange: true,
                     rangeselector: {buttons: [
                       {
                         count: 1,
                         label: '1 month',
                         step: 'month',
-                        stepmode: 'backward'
+                        stepmode: 'backward',
                       },
                       {step: 'all'}
                     ]},
-                    rangeslider: {autorange: true},
-                    type: 'date'
+                    type: 'date',
                   },
                   yaxis: {
+                    tickformat: '.2%',
+                    tickfont: {size: 6},
                     autorange: true,
-                    type: 'linear'
+                    type: 'linear',
                   },
-                  width: 500,
-                  height: 300,
-                  plot_bgcolor:"#F0F0F5",
+                  legend: {"orientation": "h", x: .5, y:-1, 
+                    font: {
+                      size: 6,
+                    },
+                  },
+                  useResizeHandler: true,
+                  style: {width: "100%", height: "100%"},
+                  plot_bgcolor:"#F4F5F6",
                   paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 25,
-                    r: 15,
-                    b: 10,
-                    t: 50,
-                    pad: 1
-                  }
+                  margin: {l: 40, r: 10, b: 30, t: 30,pad: 1},
                 }
                 Plotly.newPlot('trend', traces, layout);
               })
