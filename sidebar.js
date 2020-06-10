@@ -365,7 +365,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                     l: 25,
                     r: 15,
                     b: 10,
-                    t: 50,
+                    t: 60,
                     pad: 1
                   }
                 }
