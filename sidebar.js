@@ -316,7 +316,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   name: 'Smoothed CLI',
                   x: xl_covid,
                   y: yl_covid,
-                  line: {color: '#D7421B',
+                  line: {color: '#F3BE95',
                         width: 3,
                         shape: 'spline',
                         smoothing: .15
@@ -328,7 +328,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   name: 'Smoothed ILI',
                   x: xl_flu,
                   y: yl_flu,
-                  line: {color: '#4491E0',
+                  line: {color: '#95CAF3',
                         width: 3,
                         shape: 'spline',
                         smoothing: .15
@@ -338,7 +338,6 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 var traces = [trace_covid, trace_flu];
   
                 var layout = {
-                  title: country.concat(" Trend"),
                   xaxis: {
                     autorange: true,
                     rangeselector: {buttons: [
@@ -354,13 +353,15 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                     type: 'date'
                   },
                   yaxis: {
+                    zeroline:false, 
+                    title: '%',
                     autorange: true,
                     type: 'linear'
                   },
                   width: 500,
                   height: 300,
                   plot_bgcolor:"#F0F0F5",
-                  paper_bgcolor: '#f7f6f2',
+                  paper_bgcolor: '#F7F6F2',
                   margin: {
                     l: 25,
                     r: 15,
@@ -462,7 +463,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   name: 'Smoothed CLI',
                   x: xl_covid,
                   y: yl_covid,
-                  line: {color: '#D7421B',
+                  line: {color: '#F3BE95',
                         width: 3,
                         shape: 'spline',
                         smoothing: .15
@@ -474,7 +475,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   name: 'Smoothed ILI',
                   x: xl_flu,
                   y: yl_flu,
-                  line: {color: '#4491E0',
+                  line: {color: '#95CAF3',
                         width: 3,
                         shape: 'spline',
                         smoothing: .15
@@ -484,7 +485,6 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 var traces = [trace_covid, trace_flu];
   
                 var layout = {
-                  title: country.concat(" - ", region, " Trend"),
                   xaxis: {
                     autorange: true,
                     rangeselector: {buttons: [
@@ -506,7 +506,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   width: 500,
                   height: 300,
                   plot_bgcolor:"#F0F0F5",
-                  paper_bgcolor: '#f7f6f2',
+                  paper_bgcolor: '#F7F6F2',
                   margin: {
                     l: 25,
                     r: 15,
