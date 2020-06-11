@@ -223,21 +223,18 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           for (th of el.getElementsByTagName("th")) {
             th_list.push(th.innerText);
           }
-          //console.log(th_list); 
+          console.log(th_list); 
 
           td_list = [];
           for (td of el.getElementsByTagName("td")) {
             td_list.push(td.innerText);
           }
-          //console.log(td_list);
+          console.log(td_list);
           
           //9 is country level
           if (td_list.length == 9) {
             for (i = 4; i < td_list.length; i++) {  
-              if(i == 7){
-                continue;
-              }
-              else if(i==5 || i ==6)
+              if(i==5 || i ==6)
               {
                 // formatt values to percentage
                 res_html +=
@@ -275,7 +272,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
             //******************************START OF TREND CHART COUNTRY LEVEL********************************/
             var country = td_list[4];
             var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
-            var last_covid = "&daterange=20200424-202000609";
+            var last_covid = "&daterange=20200424-202000608";
             var res_covid = first_covid.concat(country, last_covid);
             
             var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
@@ -290,6 +287,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
             var xl_flu = []
             var yl_flu = []
 
+            console.log(url_covid);
             //Country Covid Trace
             Plotly.d3.json(url_covid, function(figure){
               var data = figure.data;
@@ -320,7 +318,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                         width: 2,
                         shape: 'spline',
                         smoothing: .15
-                        }
+                        },
                 }
   
                 var trace_flu = {
@@ -339,17 +337,8 @@ var smooth_region_agg_source=new ol.source.TileWMS({
   
                 var layout = {
                   xaxis: {
-                    tickfont: {size: 7},
+                    tickfont: {size: 7.5},
                     autorange: true,
-                    rangeselector: {buttons: [
-                      {
-                        count: 1,
-                        label: '1 month',
-                        step: 'month',
-                        stepmode: 'backward'
-                      },
-                      {step: 'all'}
-                    ]},
                     type: 'date',
                   },
                   yaxis: {
@@ -358,16 +347,16 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                     autorange: true,
                     type: 'linear',
                   },
-                  legend: {"orientation": "h", x: .5, y:-1, 
+                  legend: {"orientation": "h", x: .5, y:-.3, 
                     font: {
-                      size: 6,
+                      size: 7.5,
                     },
                   },
                   useResizeHandler: true,
                   style: {width: "100%", height: "100%"},
                   plot_bgcolor:"#F4F5F6",
                   paper_bgcolor: '#F7F6F2',
-                  margin: {l: 40, r: 10, b: 30, t: 30,pad: 1},
+                  margin: {l: 30, r: 5, b: 5, t: 10, pad: 1},
                 }
                 Plotly.newPlot('trend', traces, layout);
               })   
@@ -378,10 +367,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           else if (td_list.length == 11)
           {
             for (i = 5; i < td_list.length; i++) {
-              if(i==9) {
-                continue;
-              }
-              else if(i==7 || i ==8)
+              if(i==7 || i ==8)
               {
                 // formatt values to percentage
                 res_html +=
@@ -485,17 +471,8 @@ var smooth_region_agg_source=new ol.source.TileWMS({
   
                 var layout = {
                   xaxis: {
-                    tickfont: {size: 7},
+                    tickfont: {size: 7.5},
                     autorange: true,
-                    rangeselector: {buttons: [
-                      {
-                        count: 1,
-                        label: '1 month',
-                        step: 'month',
-                        stepmode: 'backward',
-                      },
-                      {step: 'all'}
-                    ]},
                     type: 'date',
                   },
                   yaxis: {
@@ -504,16 +481,16 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                     autorange: true,
                     type: 'linear',
                   },
-                  legend: {"orientation": "h", x: .5, y:-1, 
+                  legend: {"orientation": "h", x: .5, y:-.3, 
                     font: {
-                      size: 6,
+                      size: 7.5,
                     },
                   },
                   useResizeHandler: true,
                   style: {width: "100%", height: "100%"},
                   plot_bgcolor:"#F4F5F6",
                   paper_bgcolor: '#F7F6F2',
-                  margin: {l: 40, r: 10, b: 30, t: 30,pad: 1},
+                  margin: {l: 30, r: 5, b: 5, t: 10, pad: 1},
                 }
                 Plotly.newPlot('trend', traces, layout);
               })
