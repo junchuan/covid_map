@@ -11,6 +11,7 @@
   <link rel="stylesheet" href="src/main.css" />
   <link rel="stylesheet" href="src/ol-layerswitcher.css" />
   <link rel="stylesheet" href="sidebar.css" />
+  <script src='https://cdn.plot.ly/plotly-latest.min.js'></script>
 
 
   <link rel="stylesheet" href="https://unpkg.com/ol-popup@4.0.0/src/ol-popup.css" />
@@ -49,6 +50,10 @@
 
   }
 
+  #trend {
+    height: 120px;
+  }
+
   p.tiny {
     line-height: 0.3;
   }
@@ -75,7 +80,8 @@
     border-radius: 10px;
     display: none;
     position: absolute;
-    width: 210px;
+    width: 410px;
+    height: 200px;
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
     opacity: 0.9;
     background-color: #F6F6F6;
@@ -84,7 +90,6 @@
     bottom: 12px;
     left: -50px;
     text-decoration-color: #951022;
-
   }
 
   .ol-popup:after,
@@ -126,6 +131,11 @@
     color: #951022;
   }
 
+  .ol-popup-content {
+    min-width: 170px;
+    max-height: 200px;
+  }
+
   table {
     border-collapse: collapse;
     width: 100%;
@@ -141,6 +151,15 @@
   tr:hover {
     background-color: lightgray;
   }
+
+  .modebar{
+      display: none !important;
+  } 
+  .hovertext text{
+    font-size:10px !important;
+  }
+
+
 </style>
 
 <body>

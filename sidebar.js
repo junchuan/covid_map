@@ -203,8 +203,9 @@ var smooth_region_agg_source=new ol.source.TileWMS({
       { INFO_FORMAT: "text/html" }
     );
 
-     
-    // console.log(url);
+
+    
+    //console.log(url);
     if (url) {
       fetch(url)
         .then(function (response) {
@@ -212,7 +213,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           return response.text();
         })
         .then(function (html) {
-          // console.log(html);
+          //console.log(html);
           var el = document.createElement("html");
           el.innerHTML = html;
 
@@ -222,18 +223,18 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           for (th of el.getElementsByTagName("th")) {
             th_list.push(th.innerText);
           }
-          // console.log(th_list);
+          console.log(th_list); 
 
           td_list = [];
           for (td of el.getElementsByTagName("td")) {
             td_list.push(td.innerText);
           }
-          // console.log(td_list);
-
-          if (td_list.length == 7) {
-            for (i = 1; i < td_list.length; i++) {
-
-              if(i==3 || i ==4)
+          console.log(td_list);
+          
+          //9 is country level
+          if (td_list.length == 9) {
+            for (i = 4; i < td_list.length; i++) {  
+              if(i==5 || i ==6)
               {
                 // formatt values to percentage
                 res_html +=
@@ -243,7 +244,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 (td_list[i]*100).toFixed(2) +" %"+
                 "</td></tr>";
               }
-              else if(i == 6){
+              else if(i == 8){
 
                 // formatt date
                 surveydate  = new Date(td_list[i])
@@ -263,17 +264,110 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 "</b>: </td><td>" +
                 td_list[i] +
                 "</td></tr>";
-
               }
             }
             res_html += "</table>";
+            res_html += "<div id=trend></div>";
+
+            //******************************START OF TREND CHART COUNTRY LEVEL********************************/
+            var country = td_list[4];
+            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
+            var last_covid = "&daterange=20200424-202000608";
+            var res_covid = first_covid.concat(country, last_covid);
+            
+            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
+            var last_flu = "&daterange=20200424-202000609";
+            var res_flu = first_flu.concat(country, last_flu);
+
+            var url_covid = res_covid;
+            var xl_covid = [];
+            var yl_covid = [];
+
+            var url_flu = res_flu
+            var xl_flu = []
+            var yl_flu = []
+
+            console.log(url_covid);
+            //Country Covid Trace
+            Plotly.d3.json(url_covid, function(figure){
+              var data = figure.data;
+              
+              data.forEach(element => {
+                var a = element.survey_date.toString();
+                var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
+                xl_covid.push(s);
+                yl_covid.push((element.smoothed_cli));
+              });
+              //Country Flu Trace
+              Plotly.d3.json(url_flu, function(figure){
+                var data = figure.data;
+                
+                data.forEach(element => {
+                  var a = element.survey_date.toString();
+                  var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
+                  xl_flu.push(s);
+                  yl_flu.push((element.smoothed_ili));
+                });
+
+                var trace_covid = {
+                  mode: "lines",
+                  name: 'Smoothed CLI',
+                  x: xl_covid,
+                  y: yl_covid,
+                  line: {color: '#F3BE95',
+                        width: 2,
+                        shape: 'spline',
+                        smoothing: .15
+                        },
+                }
+  
+                var trace_flu = {
+                  mode: "lines",
+                  name: 'Smoothed ILI',
+                  x: xl_flu,
+                  y: yl_flu,
+                  line: {color: '#95CAF3',
+                        width: 2,
+                        shape: 'spline',
+                        smoothing: .15
+                        }
+                }
+  
+                var traces = [trace_covid, trace_flu];
+  
+                var layout = {
+                  xaxis: {
+                    tickfont: {size: 7.5},
+                    autorange: true,
+                    type: 'date',
+                  },
+                  yaxis: {
+                    tickformat: '.2%',
+                    tickfont: {size: 7},
+                    autorange: true,
+                    type: 'linear',
+                  },
+                  legend: {"orientation": "h", x: .5, y:-.3, 
+                    font: {
+                      size: 7.5,
+                    },
+                  },
+                  useResizeHandler: true,
+                  style: {width: "100%", height: "100%"},
+                  plot_bgcolor:"#F4F5F6",
+                  paper_bgcolor: '#F7F6F2',
+                  margin: {l: 30, r: 5, b: 5, t: 10, pad: 1},
+                }
+                Plotly.newPlot('trend', traces, layout);
+              })   
+            })
+
             popup.show(evt.coordinate, res_html);
           } 
-          else if (td_list.length == 8)
+          else if (td_list.length == 11)
           {
-            for (i = 1; i < td_list.length; i++) {
-
-              if(i==4 || i ==5)
+            for (i = 5; i < td_list.length; i++) {
+              if(i==7 || i ==8)
               {
                 // formatt values to percentage
                 res_html +=
@@ -283,7 +377,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 (td_list[i]*100).toFixed(2) +" %"+
                 "</td></tr>";
               }
-              else if(i == 7){
+              else if(i == 10){
 
                 // formatt date
                 surveydate  = new Date(td_list[i])
@@ -306,7 +400,104 @@ var smooth_region_agg_source=new ol.source.TileWMS({
 
               }
             }
+
+            //******************************START OF TREND CHART REGION LEVEL********************************/
+            var country = td_list[5];
+            var region = td_list[6];
+            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
+            var second_covid = "&region=";
+            var last_covid = "&daterange=20200424-202000609";
+            var res_covid = first_covid.concat(country, second_covid, region, last_covid);
+
+            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
+            var second_flu = "&region=";
+            var last_flu = "&daterange=20200424-202000609";
+            var res_flu = first_flu.concat(country, second_flu, region, last_flu);
+    
+            var url_covid = res_covid;
+            var xl_covid = [];
+            var yl_covid= [];
+
+            var url_flu = res_flu;
+            var xl_flu = [];
+            var yl_flu= [];
+            
+            //Regional Covid Trace
+            Plotly.d3.json(url_covid, function(figure){
+              var data = figure.data;
+              
+              data.forEach(element => {
+                var a = element.survey_date.toString();
+                var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
+                xl_covid.push(s);
+                yl_covid.push(element.smoothed_cli);
+              });
+              //Regional Flu Trace
+              Plotly.d3.json(url_flu, function(figure){
+                var data = figure.data;
+                
+                data.forEach(element => {
+                  var a = element.survey_date.toString();
+                  var s = [a.slice(0, 4), a.slice(4,6), a.slice(6,8)].join('-');
+                  xl_flu.push(s);
+                  yl_flu.push(element.smoothed_ili);
+                });
+
+                var trace_covid = {
+                  mode: "lines",
+                  name: 'Smoothed CLI',
+                  x: xl_covid,
+                  y: yl_covid,
+                  line: {color: '#F3BE95',
+                        width: 2,
+                        shape: 'spline',
+                        smoothing: .15
+                        }
+                }
+
+                var trace_flu = {
+                  mode: "lines",
+                  name: 'Smoothed ILI',
+                  x: xl_flu,
+                  y: yl_flu,
+                  line: {color: '#95CAF3',
+                        width: 2,
+                        shape: 'spline',
+                        smoothing: .15
+                        }
+                }
+  
+                var traces = [trace_covid, trace_flu];
+  
+                var layout = {
+                  xaxis: {
+                    tickfont: {size: 7.5},
+                    autorange: true,
+                    type: 'date',
+                  },
+                  yaxis: {
+                    tickformat: '.2%',
+                    tickfont: {size: 7},
+                    autorange: true,
+                    type: 'linear',
+                  },
+                  legend: {"orientation": "h", x: .5, y:-.3, 
+                    font: {
+                      size: 7.5,
+                    },
+                  },
+                  useResizeHandler: true,
+                  style: {width: "100%", height: "100%"},
+                  plot_bgcolor:"#F4F5F6",
+                  paper_bgcolor: '#F7F6F2',
+                  margin: {l: 30, r: 5, b: 5, t: 10, pad: 1},
+                }
+                Plotly.newPlot('trend', traces, layout);
+              })
+            })
+
             res_html += "</table>";
+            res_html += "<div id=trend></div>";
             popup.show(evt.coordinate, res_html);
 
           }
