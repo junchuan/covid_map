@@ -339,7 +339,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
   
                 var layout = {
                   xaxis: {
-                    tickfont: {size: 6},
+                    tickfont: {size: 7},
                     autorange: true,
                     rangeselector: {buttons: [
                       {
@@ -354,7 +354,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   },
                   yaxis: {
                     tickformat: '.2%',
-                    tickfont: {size: 6},
+                    tickfont: {size: 7},
                     autorange: true,
                     type: 'linear',
                   },
@@ -485,7 +485,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
   
                 var layout = {
                   xaxis: {
-                    tickfont: {size: 6},
+                    tickfont: {size: 7},
                     autorange: true,
                     rangeselector: {buttons: [
                       {
@@ -500,7 +500,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                   },
                   yaxis: {
                     tickformat: '.2%',
-                    tickfont: {size: 6},
+                    tickfont: {size: 7},
                     autorange: true,
                     type: 'linear',
                   },
