@@ -327,7 +327,7 @@
             var url_covid = urlCreator("covid", "smoothed", td_list[4], null, enddate);
             var url_flu = urlCreator("flu", "smoothed", td_list[4], null, enddate);
             plotCreator("smooth", url_covid, url_flu);
-            
+
             popup.show(evt.coordinate, res_html);
           } 
           else if (sssname.includes("smooth") && td_list.length == 11) {
@@ -674,6 +674,9 @@ function urlCreator(indicator, signal, country, region, endDate) {
   }
 }
 
+//Function to create a trend plot
+//Params: layer selection (smooth, unw, live), api covid url, api flu url
+//This function creates a trend plot according to the layer selected
 function plotCreator(layer, url_covid, url_flu) {
   var xl_covid = [];
   var yl_covid = [];
