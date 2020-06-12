@@ -13,10 +13,6 @@
     url: BASE_URL,
   });
 
-<<<<<<< HEAD
-  
-=======
->>>>>>> 4947c0c5cce739054a33cead75070f9d3c7e167f
   var country_agg_source_unw = new ol.source.TileWMS({
     // ratio: 1,
     //  singleTile: true,
@@ -29,54 +25,6 @@
   });
 
 
-<<<<<<< HEAD
-var smooth_country_agg_source=new ol.source.TileWMS({
-  //  maxZoom: 2,
-  //  ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:smooth_country_agg_view_prod",
-    styles: "new_smoothed",
-    //  singleTile: true
-  },
-  url: BASE_URL,
-});
-
-var region_agg_source=new ol.source.TileWMS({
-  // ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:region_agg_view_prod",
-    styles: "new_living",
-    //     singleTile: true
-  },
-  url: BASE_URL,
-});
-
-
-var region_agg_source_unw = new ol.source.TileWMS({
-  // ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:region_agg_view_prod",
-    styles: "new_living_unw",
-    //     singleTile: true
-  },
-  url: BASE_URL,
-});
-
-var smooth_region_agg_source=new ol.source.TileWMS({
-  //  maxZoom: 2,
-  //  ratio: 1,
-  //  singleTile: true,
-  params: {
-    LAYERS: "covidmap:smooth_region_agg_view_prod",
-    styles: "new_smoothed",
-    //  singleTile: true
-  },
-  url: BASE_URL,
-});
-=======
   var smooth_country_agg_source = new ol.source.TileWMS({
     //  maxZoom: 2,
     //  ratio: 1,
@@ -122,7 +70,6 @@ var smooth_region_agg_source=new ol.source.TileWMS({
     },
     url: BASE_URL,
   });
->>>>>>> 4947c0c5cce739054a33cead75070f9d3c7e167f
 
 
 
@@ -213,11 +160,7 @@ var smooth_region_agg_source=new ol.source.TileWMS({
                 title: "Live estimates(unweighted)",
                 minZoom: 4,
                 opacity: 0.7,
-<<<<<<< HEAD
-                visible:false,
-=======
                 visible: false,
->>>>>>> 4947c0c5cce739054a33cead75070f9d3c7e167f
                 source: region_agg_source_unw
               }),
               new ol.layer.Tile({
@@ -328,20 +271,13 @@ var smooth_region_agg_source=new ol.source.TileWMS({
           for (th of el.getElementsByTagName("th")) {
             th_list.push(th.innerText);
           }
-<<<<<<< HEAD
-           console.log(th_list);
-=======
           console.log(sssname);
           console.log(th_list);
->>>>>>> 4947c0c5cce739054a33cead75070f9d3c7e167f
 
           td_list = [];
           for (td of el.getElementsByTagName("td")) {
             td_list.push(td.innerText);
           }
-<<<<<<< HEAD
-           console.log(td_list);
-=======
           console.log(td_list);
 
           //SMOOTH LAYER
@@ -355,7 +291,6 @@ var smooth_region_agg_source=new ol.source.TileWMS({
               th_list[i] +
               "</b> </td>";
             }
->>>>>>> 4947c0c5cce739054a33cead75070f9d3c7e167f
 
             res_html +="</tr>"
             res_html +="<tr>"
@@ -552,13 +487,6 @@ var smooth_region_agg_source=new ol.source.TileWMS({
             res_html += "</table>";
             res_html += "<div id=trend></div>";
             popup.show(evt.coordinate, res_html);
-<<<<<<< HEAD
-          }
-          else if (td_list.length == 8)
-          {
-            for (i = 1; i < td_list.length; i++) {
-=======
->>>>>>> 4947c0c5cce739054a33cead75070f9d3c7e167f
 
           }
           //LIVE 
@@ -679,95 +607,8 @@ var smooth_region_agg_source=new ol.source.TileWMS({
             res_html += "<div id=trend></div>";
             popup.show(evt.coordinate, res_html);
 
-<<<<<<< HEAD
-          }
-          else if (td_list.length == 9)
-          {
-            for (i = 1; i < td_list.length; i++) {
-
-              if(i>=3 && i <=6)
-              {
-                // formatt values to percentage
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                (td_list[i]*100).toFixed(2) +" %"+
-                "</td></tr>";
-              }
-              else if(i == 8){
-
-                // formatt date
-                surveydate  = new Date(td_list[i])
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                surveydate.toLocaleDateString("en-US")+
-                "</td></tr>";
-
-              }
-              else{ 
-
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                td_list[i] +
-                "</td></tr>";
-
-              }
-            }
-            res_html += "</table>";
-            popup.show(evt.coordinate, res_html);
-
-          } 
-          else if (td_list.length == 10)
-          {
-            for (i = 1; i < td_list.length; i++) {
-
-              if(i>=4 && i <=7)
-              {
-                // formatt values to percentage
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                (td_list[i]*100).toFixed(2) +" %"+
-                "</td></tr>";
-              }
-              else if(i == 9){
-
-                // formatt date
-                surveydate  = new Date(td_list[i])
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                surveydate.toLocaleDateString("en-US")+
-                "</td></tr>";
-
-              }
-              else{ 
-
-                res_html +=
-                "<tr><td><b>" +
-                th_list[i] +
-                "</b>: </td><td>" +
-                td_list[i] +
-                "</td></tr>";
-
-              }
-            }
-            res_html += "</table>";
-            popup.show(evt.coordinate, res_html);
-
-          }
-          else {
-=======
           } 
           else{
->>>>>>> 4947c0c5cce739054a33cead75070f9d3c7e167f
             popup.hide();
           }
         });
