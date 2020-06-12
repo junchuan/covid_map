@@ -280,8 +280,8 @@
           }
           console.log(td_list);
 
-          //9 is country level
-          if (td_list.length == 9) {
+          //SMOOTH LAYER
+          if (sssname.includes("smooth") && td_list.length == 9) {
 
             res_html ="<tr><b>" + td_list[4] +"</b></tr>";
             res_html += "<table style=\"width:100%\"><tr>" 
@@ -321,129 +321,16 @@
             res_html += "</table>";
             res_html += "<div id=trend></div>";
 
-            //******************************START OF TREND CHART COUNTRY LEVEL********************************/
-            enddate = surveydate.toLocaleDateString('ISO')
+            //******************************START OF TREND CHART COUNTRY LEVEL - SMOOTH********************************/
+            enddate = surveydate.toLocaleDateString('ISO');
 
-
-            var country = td_list[4];
-            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
-            var last_covid = "&daterange=20200424-"+enddate;
-            var res_covid = first_covid.concat(country, last_covid);
-
-            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
-            var last_flu = "&daterange=20200424-"+enddate;
-            var res_flu = first_flu.concat(country, last_flu);
-
-            var url_covid = res_covid;
-            var xl_covid = [];
-            var yl_covid = [];
-
-            var url_flu = res_flu
-            var xl_flu = []
-            var yl_flu = []
-
-            console.log(url_covid);
-            //Country Covid Trace
-            Plotly.d3.json(url_covid, function (figure) {
-              var data = figure.data;
-
-              data.forEach(element => {
-                var a = element.survey_date.toString();
-                var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                xl_covid.push(s);
-                yl_covid.push((element.smoothed_cli));
-              });
-              //Country Flu Trace
-              Plotly.d3.json(url_flu, function (figure) {
-                var data = figure.data;
-
-                data.forEach(element => {
-                  var a = element.survey_date.toString();
-                  var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                  xl_flu.push(s);
-                  yl_flu.push((element.smoothed_ili));
-                });
-
-                var trace_covid = {
-                  mode: "lines",
-                  name: 'Smoothed CLI',
-                  x: xl_covid,
-                  y: yl_covid,
-                  line: {
-                    color: '#F3BE95',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  },
-                }
-
-                var trace_flu = {
-                  mode: "lines",
-                  name: 'Smoothed ILI',
-                  x: xl_flu,
-                  y: yl_flu,
-                  line: {
-                    color: '#95CAF3',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var traces = [trace_covid, trace_flu];
-
-                var layout = {
-                  xaxis: {
-                    tickfont: {
-                      size: 7.5
-                    },
-                    autorange: true,
-                    type: 'date',
-                  },
-                  yaxis: {
-                    tickformat: '.2%',
-                    tickfont: {
-                      size: 7
-                    },
-                    autorange: true,
-                    type: 'linear',
-                  },
-                  legend: {
-                    "orientation": "h",
-                    x: .5,
-                    y: -.3,
-                    font: {
-                      size: 7.5,
-                    },
-                  },
-                  useResizeHandler: true,
-
-                  autosize: true,
-  
-                  style: {
-                    width: "100%",
-                    height: "100%"
-                  },
-           
-                  plot_bgcolor: "#F4F5F6",
-                  paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 30,
-                    r: 5,
-                    b: 0,
-                    t: 10,
-                    pad: 0
-                  },
-                }
-                Plotly.newPlot('trend', traces, layout);
-              })
-            })
-
+            var url_covid = urlCreator("covid", "smoothed", td_list[4], null, enddate);
+            var url_flu = urlCreator("flu", "smoothed", td_list[4], null, enddate);
+            plotCreator("smooth", url_covid, url_flu);
+            
             popup.show(evt.coordinate, res_html);
           } 
           else if (sssname.includes("smooth") && td_list.length == 11) {
-
-
 
             res_html ="<tr><b>" + td_list[6] + ", "+td_list[5]+"</b></tr>";
             res_html += "<table style=\"width:100%\"><tr>" 
@@ -483,126 +370,22 @@
             res_html += "</table>";
             res_html += "<div id=trend></div>";
 
-            //******************************START OF TREND CHART REGION LEVEL********************************/
-            enddate = surveydate.toLocaleDateString('ISO')
-            var country = td_list[5];
-            var region = td_list[6];
-            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
-            var second_covid = "&region=";
-            var last_covid = "&daterange=20200424-"+enddate;
-            var res_covid = first_covid.concat(country, second_covid, region, last_covid);
+            //******************************START OF TREND CHART REGION LEVEL - SMOOTH********************************/
+            enddate = surveydate.toLocaleDateString('ISO');
 
-            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
-            var second_flu = "&region=";
-            var last_flu = "&daterange=20200424-"+enddate;
-            var res_flu = first_flu.concat(country, second_flu, region, last_flu);
-
-            var url_covid = res_covid;
-            var xl_covid = [];
-            var yl_covid = [];
-
-            var url_flu = res_flu;
-            var xl_flu = [];
-            var yl_flu = [];
+            var url_covid = urlCreator("covid", "smoothed", td_list[5], td_list[6], enddate);
+            var url_flu = urlCreator("flu", "smoothed", td_list[5], td_list[6], enddate);
 
             //Regional Covid Trace
-            Plotly.d3.json(url_covid, function (figure) {
-              var data = figure.data;
-
-              data.forEach(element => {
-                var a = element.survey_date.toString();
-                var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                xl_covid.push(s);
-                yl_covid.push(element.smoothed_cli);
-              });
-              //Regional Flu Trace
-              Plotly.d3.json(url_flu, function (figure) {
-                var data = figure.data;
-
-                data.forEach(element => {
-                  var a = element.survey_date.toString();
-                  var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                  xl_flu.push(s);
-                  yl_flu.push(element.smoothed_ili);
-                });
-
-                var trace_covid = {
-                  mode: "lines",
-                  name: 'Smoothed CLI',
-                  x: xl_covid,
-                  y: yl_covid,
-                  line: {
-                    color: '#F3BE95',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var trace_flu = {
-                  mode: "lines",
-                  name: 'Smoothed ILI',
-                  x: xl_flu,
-                  y: yl_flu,
-                  line: {
-                    color: '#95CAF3',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var traces = [trace_covid, trace_flu];
-
-                var layout = {
-                  xaxis: {
-                    tickfont: {
-                      size: 7.5
-                    },
-                    autorange: true,
-                    type: 'date',
-                  },
-                  yaxis: {
-                    tickformat: '.2%',
-                    tickfont: {
-                      size: 7
-                    },
-                    autorange: true,
-                    type: 'linear',
-                  },
-                  legend: {
-                    "orientation": "h",
-                    x: .5,
-                    y: -.3,
-                    font: {
-                      size: 7.5,
-                    },
-                  },
-                  useResizeHandler: true,
-                  style: {
-                    width: "100%",
-                    height: "100%"
-                  },
-                  plot_bgcolor: "#F4F5F6",
-                  paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 30,
-                    r: 5,
-                    b: 0,
-                    t: 10,
-                    pad: 0
-                  },
-                }
-                Plotly.newPlot('trend', traces, layout);
-              })
-            })
-
+            plotCreator("smooth", url_covid, url_flu);
+            
             res_html += "</table>";
             res_html += "<div id=trend></div>";
             popup.show(evt.coordinate, res_html);
 
-          } 
-          else if(td_list.length == 11 && sssname.includes("unw")){
+          }
+          //LIVE UNWEIGHTED 
+          else if(sssname.includes("unw") && td_list.length == 11){
 
             res_html ="<tr><b>" + td_list[3] +"</b></tr>";
             res_html += "<table style=\"width:100%\"><tr>" 
@@ -642,120 +425,71 @@
             res_html += "</table>";
             res_html += "<div id=trend></div>";
 
-            //******************************START OF TREND CHART COUNTRY LEVEL********************************/
-            var country = td_list[3];
-            enddate = surveydate.toLocaleDateString('ISO')
-            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
-            var last_covid = "&daterange=20200424-"+enddate;
-            var res_covid = first_covid.concat(country, last_covid);
+            //******************************START OF TREND CHART COUNTRY LEVEL********************************/  
+            enddate = surveydate.toLocaleDateString('ISO');
 
-            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
-            var last_flu = "&daterange=20200424-"+enddate;
-            var res_flu = first_flu.concat(country, last_flu);
+            var url_covid = urlCreator("covid", "daily", td_list[3], null, enddate);
+            var url_flu = urlCreator("flu", "daily", td_list[3], null, enddate);
 
-            var url_covid = res_covid;
-            var xl_covid = [];
-            var yl_covid = [];
-
-            var url_flu = res_flu
-            var xl_flu = []
-            var yl_flu = []
-
-            console.log(url_covid);
             //Country Covid Trace
-            Plotly.d3.json(url_covid, function (figure) {
-              var data = figure.data;
-
-              data.forEach(element => {
-                var a = element.survey_date.toString();
-                var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                xl_covid.push(s);
-                yl_covid.push((element.smoothed_cli));
-              });
-              //Country Flu Trace
-              Plotly.d3.json(url_flu, function (figure) {
-                var data = figure.data;
-
-                data.forEach(element => {
-                  var a = element.survey_date.toString();
-                  var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                  xl_flu.push(s);
-                  yl_flu.push((element.smoothed_ili));
-                });
-
-                var trace_covid = {
-                  mode: "lines",
-                  name: 'Smoothed CLI',
-                  x: xl_covid,
-                  y: yl_covid,
-                  line: {
-                    color: '#F3BE95',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  },
-                }
-
-                var trace_flu = {
-                  mode: "lines",
-                  name: 'Smoothed ILI',
-                  x: xl_flu,
-                  y: yl_flu,
-                  line: {
-                    color: '#95CAF3',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var traces = [trace_covid, trace_flu];
-
-                var layout = {
-                  xaxis: {
-                    tickfont: {
-                      size: 7.5
-                    },
-                    autorange: true,
-                    type: 'date',
-                  },
-                  yaxis: {
-                    tickformat: '.2%',
-                    tickfont: {
-                      size: 7
-                    },
-                    autorange: true,
-                    type: 'linear',
-                  },
-                  legend: {
-                    "orientation": "h",
-                    x: .5,
-                    y: -.3,
-                    font: {
-                      size: 7.5,
-                    },
-                  },
-                  useResizeHandler: true,
-                  style: {
-                    width: "100%",
-                    height: "100%"
-                  },
-                  plot_bgcolor: "#F4F5F6",
-                  paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 30,
-                    r: 5,
-                    b: 0,
-                    t: 10,
-                    pad: 0
-                  },
-                }
-                Plotly.newPlot('trend', traces, layout);
-              })
-            })
+            plotCreator("unw", url_covid, url_flu);
 
             popup.show(evt.coordinate, res_html);         
           }
+          else if (sssname.includes("unw") && td_list.length == 13) {
+            res_html ="<tr><b>" + td_list[6] + ", "+td_list[5]+"</b></tr>";
+            res_html += "<table style=\"width:100%\"><tr>" 
+            for (i = 9; i < td_list.length;i++) {
+              res_html +=
+              "<td><b>" +
+              th_list[i] +
+              "</b> </td>";
+            }
+
+            res_html +="</tr>"
+            res_html +="<tr>"
+            for (i = 9; i < td_list.length;i++) {
+              if (i == 9 || i == 10) {
+               // formatt values to percentage
+               res_html +=
+               "<td>" +
+               (td_list[i] * 100).toFixed(2) + " %" +
+               "</td>";
+              } else if (i == 12) {
+
+                // formatt date
+                surveydate = new Date(td_list[i])
+                res_html +=
+                "<td>" +
+                  surveydate.toLocaleDateString("en-US") +
+                  " </td>";
+              } else {
+
+              res_html +=
+              "<td>" +
+              td_list[i] +
+              "</td>";
+              }
+            }
+            res_html +="</tr></table>"
+            res_html += "</table>";
+            res_html += "<div id=trend></div>";
+
+            //******************************START OF TREND CHART REGION LEVEL********************************/
+            enddate = surveydate.toLocaleDateString('ISO');
+
+            var url_covid = urlCreator("covid", "daily", td_list[5], td_list[6], enddate);
+            var url_flu = urlCreator("flu", "daily", td_list[5], td_list[6], enddate);
+
+            //Regional Covid Trace
+            plotCreator("unw", url_covid, url_flu);
+
+            res_html += "</table>";
+            res_html += "<div id=trend></div>";
+            popup.show(evt.coordinate, res_html);
+
+          }
+          //LIVE 
           else if(td_list.length == 11){
 
             res_html ="<tr><b>" + td_list[3] +"</b></tr>";
@@ -803,279 +537,16 @@
             res_html += "<div id=trend></div>";
 
             //******************************START OF TREND CHART COUNTRY LEVEL********************************/
-            var country = td_list[3];
-            enddate = surveydate.toLocaleDateString('ISO')
+            enddate = surveydate.toLocaleDateString('ISO');
 
-            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
-            var last_covid = "&daterange=20200424-"+enddate;
-            var res_covid = first_covid.concat(country, last_covid);
+            var url_covid = urlCreator("covid", "daily", td_list[3], null, enddate);
+            var url_flu = urlCreator("flu", "daily", td_list[3], null, enddate);
 
-            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
-            var last_flu = "&daterange=20200424-"+enddate;
-            var res_flu = first_flu.concat(country, last_flu);
-
-            var url_covid = res_covid;
-            var xl_covid = [];
-            var yl_covid = [];
-
-            var url_flu = res_flu
-            var xl_flu = []
-            var yl_flu = []
-
-            console.log(url_covid);
             //Country Covid Trace
-            Plotly.d3.json(url_covid, function (figure) {
-              var data = figure.data;
-
-              data.forEach(element => {
-                var a = element.survey_date.toString();
-                var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                xl_covid.push(s);
-                yl_covid.push((element.smoothed_cli));
-              });
-              //Country Flu Trace
-              Plotly.d3.json(url_flu, function (figure) {
-                var data = figure.data;
-
-                data.forEach(element => {
-                  var a = element.survey_date.toString();
-                  var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                  xl_flu.push(s);
-                  yl_flu.push((element.smoothed_ili));
-                });
-
-                var trace_covid = {
-                  mode: "lines",
-                  name: 'Smoothed CLI',
-                  x: xl_covid,
-                  y: yl_covid,
-                  line: {
-                    color: '#F3BE95',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  },
-                }
-
-                var trace_flu = {
-                  mode: "lines",
-                  name: 'Smoothed ILI',
-                  x: xl_flu,
-                  y: yl_flu,
-                  line: {
-                    color: '#95CAF3',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var traces = [trace_covid, trace_flu];
-
-                var layout = {
-                  xaxis: {
-                    tickfont: {
-                      size: 7.5
-                    },
-                    autorange: true,
-                    type: 'date',
-                  },
-                  yaxis: {
-                    tickformat: '.2%',
-                    tickfont: {
-                      size: 7
-                    },
-                    autorange: true,
-                    type: 'linear',
-                  },
-                  legend: {
-                    "orientation": "h",
-                    x: .5,
-                    y: -.3,
-                    font: {
-                      size: 7.5,
-                    },
-                  },
-                  useResizeHandler: true,
-                  style: {
-                    width: "100%",
-                    height: "100%"
-                  },
-                  plot_bgcolor: "#F4F5F6",
-                  paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 30,
-                    r: 5,
-                    b: 0,
-                    t: 10,
-                    pad: 0
-                  },
-                }
-                Plotly.newPlot('trend', traces, layout);
-              })
-            })
+            plotCreator("live", url_covid, url_flu);
 
             popup.show(evt.coordinate, res_html);         
-          } 
-          else if (sssname.includes("unw") && td_list.length == 13) {
-            res_html ="<tr><b>" + td_list[6] + ", "+td_list[5]+"</b></tr>";
-            res_html += "<table style=\"width:100%\"><tr>" 
-            for (i = 9; i < td_list.length;i++) {
-              res_html +=
-              "<td><b>" +
-              th_list[i] +
-              "</b> </td>";
-            }
-
-            res_html +="</tr>"
-            res_html +="<tr>"
-            for (i = 9; i < td_list.length;i++) {
-              if (i == 9 || i == 10) {
-               // formatt values to percentage
-               res_html +=
-               "<td>" +
-               (td_list[i] * 100).toFixed(2) + " %" +
-               "</td>";
-              } else if (i == 12) {
-
-                // formatt date
-                surveydate = new Date(td_list[i])
-                res_html +=
-                "<td>" +
-                  surveydate.toLocaleDateString("en-US") +
-                  " </td>";
-              } else {
-
-              res_html +=
-              "<td>" +
-              td_list[i] +
-              "</td>";
-              }
-            }
-            res_html +="</tr></table>"
-            res_html += "</table>";
-            res_html += "<div id=trend></div>";
-
-            //******************************START OF TREND CHART REGION LEVEL********************************/
-            enddate = surveydate.toLocaleDateString('ISO')
-
-            var country = td_list[5];
-            var region = td_list[6];
-            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
-            var second_covid = "&region=";
-            var last_covid = "&daterange=20200424-"+enddate;
-            var res_covid = first_covid.concat(country, second_covid, region, last_covid);
-
-            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
-            var second_flu = "&region=";
-            var last_flu = "&daterange=20200424-"+enddate;
-            var res_flu = first_flu.concat(country, second_flu, region, last_flu);
-
-            var url_covid = res_covid;
-            var xl_covid = [];
-            var yl_covid = [];
-
-            var url_flu = res_flu;
-            var xl_flu = [];
-            var yl_flu = [];
-
-            //Regional Covid Trace
-            Plotly.d3.json(url_covid, function (figure) {
-              var data = figure.data;
-
-              data.forEach(element => {
-                var a = element.survey_date.toString();
-                var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                xl_covid.push(s);
-                yl_covid.push(element.smoothed_cli);
-              });
-              //Regional Flu Trace
-              Plotly.d3.json(url_flu, function (figure) {
-                var data = figure.data;
-
-                data.forEach(element => {
-                  var a = element.survey_date.toString();
-                  var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                  xl_flu.push(s);
-                  yl_flu.push(element.smoothed_ili);
-                });
-
-                var trace_covid = {
-                  mode: "lines",
-                  name: 'Smoothed CLI',
-                  x: xl_covid,
-                  y: yl_covid,
-                  line: {
-                    color: '#F3BE95',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var trace_flu = {
-                  mode: "lines",
-                  name: 'Smoothed ILI',
-                  x: xl_flu,
-                  y: yl_flu,
-                  line: {
-                    color: '#95CAF3',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var traces = [trace_covid, trace_flu];
-
-                var layout = {
-                  xaxis: {
-                    tickfont: {
-                      size: 7.5
-                    },
-                    autorange: true,
-                    type: 'date',
-                  },
-                  yaxis: {
-                    tickformat: '.2%',
-                    tickfont: {
-                      size: 7
-                    },
-                    autorange: true,
-                    type: 'linear',
-                  },
-                  legend: {
-                    "orientation": "h",
-                    x: .5,
-                    y: -.3,
-                    font: {
-                      size: 7.5,
-                    },
-                  },
-                  useResizeHandler: true,
-                  style: {
-                    width: "100%",
-                    height: "100%"
-                  },
-                  plot_bgcolor: "#F4F5F6",
-                  paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 30,
-                    r: 5,
-                    b: 0,
-                    t: 10,
-                    pad: 0
-                  },
-                }
-                Plotly.newPlot('trend', traces, layout);
-              })
-            })
-
-            res_html += "</table>";
-            res_html += "<div id=trend></div>";
-            popup.show(evt.coordinate, res_html);
-
-          } 
+          }  
           else if (td_list.length == 13) {
             res_html ="<tr><b>" + td_list[6] + ", "+td_list[5]+"</b></tr>";
             res_html += "<table style=\"width:100%\"><tr>" 
@@ -1124,127 +595,19 @@
             res_html += "<div id=trend></div>";
 
             //******************************START OF TREND CHART REGION LEVEL********************************/
-            enddate = surveydate.toLocaleDateString('ISO')
+            enddate = surveydate.toLocaleDateString('ISO');
 
-            var country = td_list[5];
-            var region = td_list[6];
-            var first_covid = "https://covidmap.umd.edu/api/resources?indicator=covid&type=smoothed&country=";
-            var second_covid = "&region=";
-            var last_covid = "&daterange=20200424-"+enddate;
-            var res_covid = first_covid.concat(country, second_covid, region, last_covid);
-
-            var first_flu = "https://covidmap.umd.edu/api/resources?indicator=flu&type=smoothed&country=";
-            var second_flu = "&region=";
-            var last_flu = "&daterange=20200424-"+enddate;
-            var res_flu = first_flu.concat(country, second_flu, region, last_flu);
-
-            var url_covid = res_covid;
-            var xl_covid = [];
-            var yl_covid = [];
-
-            var url_flu = res_flu;
-            var xl_flu = [];
-            var yl_flu = [];
-
+            var url_covid = urlCreator("covid", "daily", td_list[5], td_list[6], enddate);
+            var url_flu = urlCreator("flu", "daily", td_list[5], td_list[6], enddate);
+    
             //Regional Covid Trace
-            Plotly.d3.json(url_covid, function (figure) {
-              var data = figure.data;
-
-              data.forEach(element => {
-                var a = element.survey_date.toString();
-                var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                xl_covid.push(s);
-                yl_covid.push(element.smoothed_cli);
-              });
-              //Regional Flu Trace
-              Plotly.d3.json(url_flu, function (figure) {
-                var data = figure.data;
-
-                data.forEach(element => {
-                  var a = element.survey_date.toString();
-                  var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
-                  xl_flu.push(s);
-                  yl_flu.push(element.smoothed_ili);
-                });
-
-                var trace_covid = {
-                  mode: "lines",
-                  name: 'Smoothed CLI',
-                  x: xl_covid,
-                  y: yl_covid,
-                  line: {
-                    color: '#F3BE95',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var trace_flu = {
-                  mode: "lines",
-                  name: 'Smoothed ILI',
-                  x: xl_flu,
-                  y: yl_flu,
-                  line: {
-                    color: '#95CAF3',
-                    width: 2,
-                    shape: 'spline',
-                    smoothing: .15
-                  }
-                }
-
-                var traces = [trace_covid, trace_flu];
-
-                var layout = {
-                  xaxis: {
-                    tickfont: {
-                      size: 7.5
-                    },
-                    autorange: true,
-                    type: 'date',
-                  },
-                  yaxis: {
-                    tickformat: '.2%',
-                    tickfont: {
-                      size: 7
-                    },
-                    autorange: true,
-                    type: 'linear',
-                  },
-                  legend: {
-                    "orientation": "h",
-                    x: .5,
-                    y: -.3,
-                    font: {
-                      size: 7.5,
-                    },
-                  },
-                  useResizeHandler: true,
-                  style: {
-                    width: "100%",
-                    height: "100%"
-                  },
-                  plot_bgcolor: "#F4F5F6",
-                  paper_bgcolor: '#F7F6F2',
-                  margin: {
-                    l: 30,
-                    r: 5,
-                    b: 0,
-                    t: 10,
-                    pad: 0
-                  },
-                }
-                Plotly.newPlot('trend', traces, layout);
-              })
-            })
-
+            plotCreator("live", url_covid, url_flu);
+        
             res_html += "</table>";
             res_html += "<div id=trend></div>";
             popup.show(evt.coordinate, res_html);
 
           } 
-          
-          
           else{
             popup.hide();
           }
@@ -1285,3 +648,322 @@
   ol.control.LayerSwitcher.renderPanel(map, toc);
   map.addControl(sidebar);
 })();
+
+//Functiion to generate URLs to cal the API according ot layer 
+//and country or region. 
+//Params: indicator, type, country, region, endDate
+//Returns: urls string for the API
+function urlCreator(indicator, signal, country, region, endDate) {
+  var first = "https://covidmap.umd.edu/api/resources?";
+  var indic = "indicator=" + indicator;
+  var ty = "&type=" + signal;
+  var place = "&country=" + country;
+  var reg = "&region=" + region;
+  var dateRange = "&daterange=20200424-" + endDate;
+  var url;
+
+  if (region == null) {
+    //Country level URL
+    url = first.concat(indic, ty, place, dateRange);
+    return url;
+  }
+  else { 
+    //Region level URL
+    url = first.concat(indic, ty, place, reg, dateRange);
+    return url;
+  }
+}
+
+function plotCreator(layer, url_covid, url_flu) {
+  var xl_covid = [];
+  var yl_covid = [];
+  var xl_flu = []
+  var yl_flu = []
+
+  if(layer === "smooth") {
+    //Country Covid Trace
+    Plotly.d3.json(url_covid, function (figure) {
+      var data = figure.data;
+
+      data.forEach(element => {
+        var a = element.survey_date.toString();
+        var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
+        xl_covid.push(s);
+        yl_covid.push((element.smoothed_cli));
+      });
+      //Country Flu Trace
+      Plotly.d3.json(url_flu, function (figure) {
+        var data = figure.data;
+
+        data.forEach(element => {
+          var a = element.survey_date.toString();
+          var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
+          xl_flu.push(s);
+          yl_flu.push((element.smoothed_ili));
+        });
+
+        var trace_covid = {
+          mode: "lines",
+          name: 'Smoothed CLI',
+          x: xl_covid,
+          y: yl_covid,
+          line: {
+            color: '#F3BE95',
+            width: 2,
+            shape: 'spline',
+            smoothing: .15
+          },
+        }
+
+        var trace_flu = {
+          mode: "lines",
+          name: 'Smoothed ILI',
+          x: xl_flu,
+          y: yl_flu,
+          line: {
+            color: '#95CAF3',
+            width: 2,
+            shape: 'spline',
+            smoothing: .15
+          }
+        }
+
+        var traces = [trace_covid, trace_flu];
+
+        var layout = {
+          xaxis: {
+            tickfont: {
+              size: 7.5
+            },
+            autorange: true,
+            type: 'date',
+          },
+          yaxis: {
+            tickformat: '.2%',
+            tickfont: {
+              size: 7
+            },
+            autorange: true,
+            type: 'linear',
+          },
+          legend: {
+            "orientation": "h",
+            x: .5,
+            y: -.3,
+            font: {
+              size: 7.5,
+            },
+          },
+          useResizeHandler: true,
+
+          autosize: true,
+
+          style: {
+            width: "100%",
+            height: "100%"
+          },
+   
+          plot_bgcolor: "#F4F5F6",
+          paper_bgcolor: '#F7F6F2',
+          margin: {
+            l: 30,
+            r: 5,
+            b: 0,
+            t: 10,
+            pad: 0
+          },
+        }
+        Plotly.newPlot('trend', traces, layout);
+      })
+    })
+    
+  }
+
+  else if(layer === "unw") {
+    Plotly.d3.json(url_covid, function (figure) {
+      var data = figure.data;
+
+      data.forEach(element => {
+        var a = element.survey_date.toString();
+        var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
+        xl_covid.push(s);
+        yl_covid.push((element.percent_cli_unw));
+      });
+      //Country Flu Trace
+      Plotly.d3.json(url_flu, function (figure) {
+        var data = figure.data;
+
+        data.forEach(element => {
+          var a = element.survey_date.toString();
+          var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
+          xl_flu.push(s);
+          yl_flu.push((element.percent_ili_unw));
+        });
+
+        var trace_covid = {
+          mode: "lines",
+          name: '% CLI Unw',
+          x: xl_covid,
+          y: yl_covid,
+          line: {
+            color: '#F3BE95',
+            width: 2,
+            shape: 'spline',
+            smoothing: .15
+          },
+        }
+
+        var trace_flu = {
+          mode: "lines",
+          name: '% ILI Unw',
+          x: xl_flu,
+          y: yl_flu,
+          line: {
+            color: '#95CAF3',
+            width: 2,
+            shape: 'spline',
+            smoothing: .15
+          }
+        }
+
+        var traces = [trace_covid, trace_flu];
+
+        var layout = {
+          xaxis: {
+            tickfont: {
+              size: 7.5
+            },
+            autorange: true,
+            type: 'date',
+          },
+          yaxis: {
+            tickformat: '.2%',
+            tickfont: {
+              size: 7
+            },
+            autorange: true,
+            type: 'linear',
+          },
+          legend: {
+            "orientation": "h",
+            x: .5,
+            y: -.3,
+            font: {
+              size: 7.5,
+            },
+          },
+          useResizeHandler: true,
+          style: {
+            width: "100%",
+            height: "100%"
+          },
+          plot_bgcolor: "#F4F5F6",
+          paper_bgcolor: '#F7F6F2',
+          margin: {
+            l: 30,
+            r: 5,
+            b: 0,
+            t: 10,
+            pad: 0
+          },
+        }
+        Plotly.newPlot('trend', traces, layout);
+      })
+    })
+
+  }
+  else {
+    Plotly.d3.json(url_covid, function (figure) {
+      var data = figure.data;
+
+      data.forEach(element => {
+        var a = element.survey_date.toString();
+        var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
+        xl_covid.push(s);
+        yl_covid.push((element.percent_cli));
+      });
+      //Country Flu Trace
+      Plotly.d3.json(url_flu, function (figure) {
+        var data = figure.data;
+
+        data.forEach(element => {
+          var a = element.survey_date.toString();
+          var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
+          xl_flu.push(s);
+          yl_flu.push((element.percent_ili));
+        });
+
+        var trace_covid = {
+          mode: "lines",
+          name: '% CLI',
+          x: xl_covid,
+          y: yl_covid,
+          line: {
+            color: '#F3BE95',
+            width: 2,
+            shape: 'spline',
+            smoothing: .15
+          },
+        }
+
+        var trace_flu = {
+          mode: "lines",
+          name: '% ILI',
+          x: xl_flu,
+          y: yl_flu,
+          line: {
+            color: '#95CAF3',
+            width: 2,
+            shape: 'spline',
+            smoothing: .15
+          }
+        }
+
+        var traces = [trace_covid, trace_flu];
+
+        var layout = {
+          xaxis: {
+            tickfont: {
+              size: 7.5
+            },
+            autorange: true,
+            type: 'date',
+          },
+          yaxis: {
+            tickformat: '.2%',
+            tickfont: {
+              size: 7
+            },
+            autorange: true,
+            type: 'linear',
+          },
+          legend: {
+            "orientation": "h",
+            x: .5,
+            y: -.3,
+            font: {
+              size: 7.5,
+            },
+          },
+          useResizeHandler: true,
+          style: {
+            width: "100%",
+            height: "100%"
+          },
+          plot_bgcolor: "#F4F5F6",
+          paper_bgcolor: '#F7F6F2',
+          margin: {
+            l: 30,
+            r: 5,
+            b: 0,
+            t: 10,
+            pad: 0
+          },
+        }
+        Plotly.newPlot('trend', traces, layout);
+      })
+    })
+
+  }
+  
+}
