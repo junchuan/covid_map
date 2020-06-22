@@ -91,7 +91,7 @@
     box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
     opacity: 0.9;
     background-color: #F6F6F6;
-    padding: 15px 25px 1px 15px;
+    padding: 15px 25px 10px 15px;
     border: 3px solid #951022;
     bottom: 12px;
     left: -50px;
@@ -150,8 +150,8 @@
     min-width: 170px;
     max-height: 400px;
     z-index: 100000;
-
   }
+
 
   th,
   td {
@@ -179,6 +179,12 @@
     font-size:10px !important;
   }
 
+  a { 
+    text-decoration: none;
+  }
+  .link:hover{
+    background-color: bisque;
+  }
 
 
 </style>
@@ -200,7 +206,7 @@
       </ul>
 
       <ul role="tablist">
-        <li><a href="#profile" role="tab"><i class="fa fa-gear"></i></a></li>
+        <li><a href="#profile" role="tab"><i class="fa fa-question-circle"></i></a></li>
       </ul>
     </div>
 
@@ -223,6 +229,43 @@
           data, we estimate the percentage of people in a given country or region, on a given day that have CLI
           (covid-like illness = fever, along with cough, or shortness of breath, or difficulty breathing). The weight of
           each survey response is provided by Facebook.</p>
+        <p style="font-size: 13px;"><b>For more info:</b></p>
+        <p class="link" style="font-size: 12px">
+          <a href="https://covidmap.umd.edu/api.html">UMD COVID-19 World Survey Data API</a> 
+        </p>
+        <p style="font-size: 12px">
+          <a  class="link" href="https://cmu-delphi.github.io/delphi-epidata/api/">CMU's Delphi research group open API for Epidemiological Data</a> 
+        </p>
+        <table style="width:100%">
+          <tr>
+            <th>Signals</th>
+            <th>Info</th>
+          </tr>
+          <tr>
+            <td>Smoothed CLI</td>
+            <td>Estimated % of people with COVID-like illnesses; adjusted using survey weights</td>
+          </tr>
+          <tr>
+            <td>Smoothed ILI</td>
+            <td>Estimated % of people with influenza-like illnesses; adjusted using survey weights</td>
+          </tr>
+          <tr>
+            <td>% CLI Unw</td>
+            <td>Live estimated % of people with COVID-like illnesses; with no smoothing or survey weighting</td>
+          </tr>
+          <tr>
+            <td>% ILI Unw</td>
+            <td>Live estimated % of people with influenza-like illnesses; with no smoothing or survey weighting</td>
+          </tr>
+          <tr>
+            <td>% CLI</td>
+            <td>Live estimated % of people with COVID-like illnesses; adjusted using survey weights</td>
+          </tr>
+          <tr>
+            <td>% ILI</td>
+            <td>Live estimated % of people with influenza-like illnesses; adjusted using survey weights</td>
+          </tr>
+        </table>
 
 
       </div>
@@ -246,7 +289,7 @@
     <!-- <div id="popup" class="ol-popup">
       <a href="#" id="popup-closer" class="ol-popup-closer"></a>
       <div id="popup-content"></div>
-  </div>   -->
+    </div>   -->
 
     <div id="logo">
       <img src="https://geospatial.umd.edu/themes/custom/bsos_bootstrap/images/umd-globe.svg">

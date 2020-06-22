@@ -186,7 +186,7 @@
   //
   ////////////////////////////////////////////////////////////////////////////////////
 
-  var popup = new Popup();
+  var popup = new Popup(); 
   map.addOverlay(popup);
 
   // map.on('singleclick', function(evt) {
@@ -194,10 +194,13 @@
   //     popup.show(evt.coordinate, '<div><h2>Coordinates</h2><p>' + prettyCoord + '</p></div>');
   // });
 
-  map.on("singleclick", function (evt) {
+
+  var a = map.on("singleclick", pop);
+  
+
+  function pop (evt) { 
     // document.getElementById('info').innerHTML = '';
     var viewResolution = /** @type {number} */ (map.getView().getResolution());
-
     var pixel = map.getEventPixel(evt.originalEvent);
 
     layer_name = map.forEachLayerAtPixel(pixel, function (layer) {
@@ -218,7 +221,7 @@
         console.log(err);
       }
     });
-  //  console.log(sssname);
+    //  console.log(sssname);
     style_name = "new_smoothed";
     if (!layer_name) {
       console.log("cannot get information of basemap");
@@ -229,7 +232,7 @@
     } else {
       style_name = "new_living";
     }
-  //  console.log(layer_name)
+    //  console.log(layer_name)
     var agg_source = new ol.source.TileWMS({
       // ratio: 1,
       //  singleTile: true,
@@ -271,7 +274,7 @@
           for (th of el.getElementsByTagName("th")) {
             th_list.push(th.innerText);
           }
-          console.log(sssname);
+          // console.log(sssname);
           console.log(th_list);
 
           td_list = [];
@@ -317,16 +320,18 @@
               "</td>";
               }
             }
-            res_html +="</tr></table>"
+            res_html +="</tr>"
             res_html += "</table>";
             res_html += "<div id=trend></div>";
 
             //******************************START OF TREND CHART COUNTRY LEVEL - SMOOTH********************************/
             enddate = surveydate.toLocaleDateString('ISO');
 
-            var url_covid = urlCreator("covid", "smoothed", td_list[4], null, enddate);
-            var url_flu = urlCreator("flu", "smoothed", td_list[4], null, enddate);
-            plotCreator("smooth", url_covid, url_flu);
+            var url_covid = signalUrlCreator("covid", "smoothed", td_list[4], null, enddate);
+            var url_flu = signalUrlCreator("flu", "smoothed", td_list[4], null, enddate);
+            var url_covid_cases = casesUrlCreator(td_list[4], null, enddate);
+
+            plotCreator("smooth", url_covid, url_flu, url_covid_cases);
 
             popup.show(evt.coordinate, res_html);
           } 
@@ -373,11 +378,12 @@
             //******************************START OF TREND CHART REGION LEVEL - SMOOTH********************************/
             enddate = surveydate.toLocaleDateString('ISO');
 
-            var url_covid = urlCreator("covid", "smoothed", td_list[5], td_list[6], enddate);
-            var url_flu = urlCreator("flu", "smoothed", td_list[5], td_list[6], enddate);
+            var url_covid = signalUrlCreator("covid", "smoothed", td_list[5], td_list[6], enddate);
+            var url_flu = signalUrlCreator("flu", "smoothed", td_list[5], td_list[6], enddate);
+            var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
 
             //Regional Covid Trace
-            plotCreator("smooth", url_covid, url_flu);
+            plotCreator("smooth", url_covid, url_flu, url_covid_cases);
             
             res_html += "</table>";
             res_html += "<div id=trend></div>";
@@ -428,11 +434,12 @@
             //******************************START OF TREND CHART COUNTRY LEVEL********************************/  
             enddate = surveydate.toLocaleDateString('ISO');
 
-            var url_covid = urlCreator("covid", "daily", td_list[3], null, enddate);
-            var url_flu = urlCreator("flu", "daily", td_list[3], null, enddate);
+            var url_covid = signalUrlCreator("covid", "daily", td_list[3], null, enddate);
+            var url_flu = signalUrlCreator("flu", "daily", td_list[3], null, enddate);
+            var url_covid_cases = casesUrlCreator(td_list[3], null, enddate);
 
             //Country Covid Trace
-            plotCreator("unw", url_covid, url_flu);
+            plotCreator("unw", url_covid, url_flu, url_covid_cases);
 
             popup.show(evt.coordinate, res_html);         
           }
@@ -478,11 +485,12 @@
             //******************************START OF TREND CHART REGION LEVEL********************************/
             enddate = surveydate.toLocaleDateString('ISO');
 
-            var url_covid = urlCreator("covid", "daily", td_list[5], td_list[6], enddate);
-            var url_flu = urlCreator("flu", "daily", td_list[5], td_list[6], enddate);
+            var url_covid = signalUrlCreator("covid", "daily", td_list[5], td_list[6], enddate);
+            var url_flu = signalUrlCreator("flu", "daily", td_list[5], td_list[6], enddate);
+            var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
 
             //Regional Covid Trace
-            plotCreator("unw", url_covid, url_flu);
+            plotCreator("unw", url_covid, url_flu, url_covid_cases);
 
             res_html += "</table>";
             res_html += "<div id=trend></div>";
@@ -539,11 +547,12 @@
             //******************************START OF TREND CHART COUNTRY LEVEL********************************/
             enddate = surveydate.toLocaleDateString('ISO');
 
-            var url_covid = urlCreator("covid", "daily", td_list[3], null, enddate);
-            var url_flu = urlCreator("flu", "daily", td_list[3], null, enddate);
+            var url_covid = signalUrlCreator("covid", "daily", td_list[3], null, enddate);
+            var url_flu = signalUrlCreator("flu", "daily", td_list[3], null, enddate);
+            var url_covid_cases = casesUrlCreator(td_list[3], null, enddate);
 
             //Country Covid Trace
-            plotCreator("live", url_covid, url_flu);
+            plotCreator("live", url_covid, url_flu, url_covid_cases);
 
             popup.show(evt.coordinate, res_html);         
           }  
@@ -597,11 +606,12 @@
             //******************************START OF TREND CHART REGION LEVEL********************************/
             enddate = surveydate.toLocaleDateString('ISO');
 
-            var url_covid = urlCreator("covid", "daily", td_list[5], td_list[6], enddate);
-            var url_flu = urlCreator("flu", "daily", td_list[5], td_list[6], enddate);
+            var url_covid = signalUrlCreator("covid", "daily", td_list[5], td_list[6], enddate);
+            var url_flu = signalUrlCreator("flu", "daily", td_list[5], td_list[6], enddate);
+            var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
     
             //Regional Covid Trace
-            plotCreator("live", url_covid, url_flu);
+            plotCreator("live", url_covid, url_flu, url_covid_cases);
         
             res_html += "</table>";
             res_html += "<div id=trend></div>";
@@ -613,10 +623,12 @@
           }
         });
     }
-  });
+  };
 
 
 
+
+  
   map.on("pointermove", function (evt) {
     if (evt.dragging) {
       return;
@@ -636,6 +648,8 @@
     map.getTargetElement().style.cursor = hit ? "pointer" : "";
   });
 
+  
+
   // Get out-of-the-map div element with the ID "layers" and renders layers to it.
   // NOTE: If the layers are changed outside of the layer switcher then you
   // will need to call ol.control.LayerSwitcher.renderPanel again to refesh
@@ -649,11 +663,11 @@
   map.addControl(sidebar);
 })();
 
-//Functiion to generate URLs to cal the API according ot layer 
-//and country or region. 
-//Params: indicator, type, country, region, endDate
-//Returns: urls string for the API
-function urlCreator(indicator, signal, country, region, endDate) {
+// Functiion to generate URLs to cal the API according ot layer 
+// and country or region. 
+// Params: indicator, type, country, region, endDate
+// Returns: urls string for the API
+function signalUrlCreator(indicator, signal, country, region, endDate) {
   var first = "https://covidmap.umd.edu/api/resources?";
   var indic = "indicator=" + indicator;
   var ty = "&type=" + signal;
@@ -662,7 +676,14 @@ function urlCreator(indicator, signal, country, region, endDate) {
   var dateRange = "&daterange=20200424-" + endDate;
   var url;
 
-  if (region == null) {
+  if(country == "United States of America" && region != null) {
+    //USA
+    first = "https://covidmap.umd.edu/api/new?";
+    url = first.concat(indic, ty, place, reg, dateRange);
+    console.log(url);
+    return url;
+  } 
+  else if (region == null) {
     //Country level URL
     url = first.concat(indic, ty, place, dateRange);
     return url;
@@ -674,16 +695,69 @@ function urlCreator(indicator, signal, country, region, endDate) {
   }
 }
 
-//Function to create a trend plot
-//Params: layer selection (smooth, unw, live), api covid url, api flu url
-//This function creates a trend plot according to the layer selected
-function plotCreator(layer, url_covid, url_flu) {
+// Functiion to generate URLs for covid cases.
+// Params: country, region, endDate
+// Returns: urls string for the API
+function casesUrlCreator(country, region, endDate) {
+  var first = "https://covidmap.umd.edu/api/cases?";
+  var place = "&country=" + country;
+  var reg = "&region=" + region;
+  var dateRange = "&daterange=20200424-" + endDate;
+  var url;
+
+  if (region == null) {
+    //Country level URL
+    url = first.concat(place, dateRange);
+    return url;
+  }
+  else { 
+    //Region level URL
+    url = first.concat(place, reg, dateRange);
+    return url;
+  }
+
+}
+
+// Function to create a trend plot
+// Params: layer selection (smooth, unw, live), api covid url, api flu url
+// This function creates a trend plot according to the layer selected
+function plotCreator(layer, url_covid, url_flu, url_cases) {
   var xl_covid = [];
   var yl_covid = [];
   var xl_flu = []
   var yl_flu = []
+  
+  // Cases Plot
+  console.log(url_cases);
+  var xl_confirmed_covid = [];
+  var yl_confirmed_covid = [];
+  Plotly.d3.json(url_cases, function (figure) {
+    var data = figure.data;
+
+    data.forEach(element => {
+      var a = element.survey_date.toString();
+      var s = [a.slice(0, 4), a.slice(4, 6), a.slice(6, 8)].join('-');
+      xl_confirmed_covid.push(s);
+      yl_confirmed_covid.push((element.confirmed));
+    });
+  })
+
+  var trace_cases = {
+    mode: "lines",
+    name: 'COVID Confirmed',
+    x: xl_confirmed_covid,
+    y: yl_confirmed_covid,
+    yaxis: 'y2',
+    name: 'COVID-19 Cases',
+    line: {
+      color: '#ed9191',
+      width: 1.5,
+    },
+  }
+
 
   if(layer === "smooth") {
+    console.log(yl_confirmed_covid);
     //Country Covid Trace
     Plotly.d3.json(url_covid, function (figure) {
       var data = figure.data;
@@ -731,7 +805,7 @@ function plotCreator(layer, url_covid, url_flu) {
           }
         }
 
-        var traces = [trace_covid, trace_flu];
+        var traces = [trace_covid, trace_flu, trace_cases];
 
         var layout = {
           xaxis: {
@@ -740,6 +814,7 @@ function plotCreator(layer, url_covid, url_flu) {
             },
             autorange: true,
             type: 'date',
+            fixedrange: true,
           },
           yaxis: {
             tickformat: '.2%',
@@ -749,10 +824,20 @@ function plotCreator(layer, url_covid, url_flu) {
             autorange: true,
             type: 'linear',
           },
+          yaxis2: {
+            side: 'right',
+            tickformat: '.2s',
+            tickfont: {
+              size: 7
+            },
+            autorange: true,
+            type: 'linear',
+            overlaying: 'y'
+          },
           legend: {
             "orientation": "h",
-            x: .5,
-            y: -.3,
+            x: 0,
+            y: -.5,
             font: {
               size: 7.5,
             },
@@ -829,7 +914,7 @@ function plotCreator(layer, url_covid, url_flu) {
           }
         }
 
-        var traces = [trace_covid, trace_flu];
+        var traces = [trace_covid, trace_flu, trace_cases];
 
         var layout = {
           xaxis: {
@@ -838,6 +923,7 @@ function plotCreator(layer, url_covid, url_flu) {
             },
             autorange: true,
             type: 'date',
+            fixedrange: true,
           },
           yaxis: {
             tickformat: '.2%',
@@ -847,10 +933,20 @@ function plotCreator(layer, url_covid, url_flu) {
             autorange: true,
             type: 'linear',
           },
+          yaxis2: {
+            side: 'right',
+            tickformat: '.2s',
+            tickfont: {
+              size: 7
+            },
+            autorange: true,
+            type: 'linear',
+            overlaying: 'y'
+          },
           legend: {
             "orientation": "h",
-            x: .5,
-            y: -.3,
+            x: 0,
+            y: -.5,
             font: {
               size: 7.5,
             },
@@ -922,7 +1018,7 @@ function plotCreator(layer, url_covid, url_flu) {
           }
         }
 
-        var traces = [trace_covid, trace_flu];
+        var traces = [trace_covid, trace_flu, trace_cases];
 
         var layout = {
           xaxis: {
@@ -931,6 +1027,7 @@ function plotCreator(layer, url_covid, url_flu) {
             },
             autorange: true,
             type: 'date',
+            fixedrange: true,
           },
           yaxis: {
             tickformat: '.2%',
@@ -940,10 +1037,20 @@ function plotCreator(layer, url_covid, url_flu) {
             autorange: true,
             type: 'linear',
           },
+          yaxis2: {
+            side: 'right',
+            tickformat: '.2s',
+            tickfont: {
+              size: 7
+            },
+            autorange: true,
+            type: 'linear',
+            overlaying: 'y'
+          },
           legend: {
             "orientation": "h",
-            x: .5,
-            y: -.3,
+            x: 0,
+            y: -.5,
             font: {
               size: 7.5,
             },
