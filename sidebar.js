@@ -122,7 +122,7 @@
                 title: "Live estimates",
                 maxZoom: 4,
                 opacity: 0.5,
-                visible: false,
+                visible:false,
                 source: country_agg_source,
               }),
               new ol.layer.Tile({
@@ -152,7 +152,7 @@
                 title: "Live estimates",
                 minZoom: 4,
                 opacity: 0.7,
-                visible: false,
+                visible:false,
                 source: region_agg_source
               }),
               new ol.layer.Tile({

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <link rel="icon" href="https://geospatial.umd.edu/themes/custom/bsos_bootstrap/images/umd-globe.svg">
+  <meta charset="utf-8" />
+  <title>COVID-19 World Survey Map</title>
+  <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+  <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://openlayers.org/en/v6.1.1/css/ol.css" />
+  <link rel="stylesheet" href="src/main.css" />
+  <link rel="stylesheet" href="src/ol-layerswitcher.css" />
+  <link rel="stylesheet" href="sidebar.css" />
+
+
+  <link rel="stylesheet" href="https://unpkg.com/ol-popup@4.0.0/src/ol-popup.css" />
+  <!-- <link rel="stylesheet" href="popup.css" /> -->
+</head>
+
+<style>
+  #logo {
+    margin-top: 3px;
+    margin-right: 3px;
+    position: absolute;
+    right: 30px;
+    z-index: 100000;
+    opacity: 1;
+
+  }
+
+  #title {
+    right: 50%;
+    left: 50%;
+    position: absolute;
+    z-index: 100000;
+    opacity: 1;
+
+  }
+
+  #legende {
+    position: absolute;
+    z-index: 100000;
+    width: 600px;
+    height: 120px;
+    bottom: -10px;
+    right: 50%;
+    left: 50%;
+    margin-left: -100px;
+
+  }
+
+  p.tiny {
+    line-height: 0.3;
+  }
+
+  p.small {
+    line-height: 0.5;
+  }
+
+  p.big {
+    line-height: 1.8;
+    width: 1000px;
+    margin-left: -100px;
+    color: #505050;
+    font-family: Arial, Helvetica, sans-serif;
+    color: white;
+    text-shadow:
+      -1px -1px 0 #951022,
+      1px -1px 0 #951022,
+      -1px 1px 0 #951022,
+      1px 1px 0 #951022;
+  }
+
+  .ol-popup {
+    border-radius: 10px;
+    display: none;
+    position: absolute;
+    width: 210px;
+    box-shadow: 0 3px 12px rgba(0, 0, 0, 0.6);
+    opacity: 0.9;
+    background-color: #F6F6F6;
+    padding: 15px 25px 15px 15px;
+    border: 3px solid #951022;
+    bottom: 12px;
+    left: -50px;
+    text-decoration-color: #951022;
+
+  }
+
+  .ol-popup:after,
+  .ol-popup:before {
+    top: 100%;
+    border: solid transparent;
+    content: " ";
+    height: 0;
+    width: 0;
+    position: absolute;
+    pointer-events: none;
+
+  }
+
+  .ol-popup:after {
+    border-top-color: white;
+    border-width: 10px;
+    left: 48px;
+    border: 1px solid #951022;
+    margin-left: -10px;
+  }
+
+  .ol-popup:before {
+    border-top-color: #951022;
+    border-width: 15px;
+    left: 48px;
+    margin-left: -11px;
+  }
+
+  .ol-popup-closer {
+    text-decoration: none;
+    position: absolute;
+    top: 2px;
+    right: 8px;
+  }
+
+  .ol-popup-closer:after {
+    content: "✖";
+    color: #951022;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    padding: 3px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+
+  tr:hover {
+    background-color: lightgray;
+  }
+</style>
+
+<body>
+
+
+
+  <!-- START OF SIDEBAR DIV -->
+  <div id="sidebar" class="sidebar collapsed">
+
+    <!-- Nav tabs -->
+    <div class="sidebar-tabs">
+      <ul role="tablist">
+        <li><a href="#home" role="tab"><i class="fa fa-bars"></i></a></li>
+        <!--   <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>-->
+        <!--      <li class="disabled"><a href="#messages" role="tab"><i class="fa fa-envelope"></i></a></li> -->
+        <!--      <li><a href="https://github.com/Turbo87/sidebar-v2" role="tab" target="_blank"><i class="fa fa-github"></i></a></li> -->
+      </ul>
+
+      <ul role="tablist">
+        <li><a href="#profile" role="tab"><i class="fa fa-gear"></i></a></li>
+      </ul>
+    </div>
+
+    <!-- Tab panes -->
+    <div class="sidebar-content">
+      <div class="sidebar-pane" id="home">
+        <h1 class="sidebar-header">
+          Layers
+          <span class="sidebar-close"><i class="fa fa-caret-left"></i></span>
+        </h1>
+        <!-- !!! HERE WILL GO THE CONTENT OF LAYERSWITCHER !!! -->
+        <div id="layers" class="layer-switcher"></div>
+      </div>
+
+      <div class="sidebar-pane" id="profile">
+        <h1 class="sidebar-header">About<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+        <p style="font-size:15px">This map shows the weighted percentage of survey respondents that have reported CLI
+          and also the seven-day rolling average values for the CLI values.</p>
+        <p style="font-size:15px">Data calculated based on the Facebook global symptoms survey data. Using the survey
+          data, we estimate the percentage of people in a given country or region, on a given day that have CLI
+          (covid-like illness = fever, along with cough, or shortness of breath, or difficulty breathing). The weight of
+          each survey response is provided by Facebook.</p>
+
+
+      </div>
+      <!--  
+        <div class="sidebar-pane" id="messages">
+          <h1 class="sidebar-header">Messages<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+        </div>
+     -->
+      <!--  
+      <div class="sidebar-pane" id="settings">
+        <h1 class="sidebar-header">Settings<span class="sidebar-close"><i class="fa fa-caret-left"></i></span></h1>
+      </div>
+        -->
+    </div>
+  </div>
+  <!-- END OF SIDEBAR DIV -->
+
+
+
+  <div id="map" class="sidebar-map">
+    <!-- <div id="popup" class="ol-popup">
+      <a href="#" id="popup-closer" class="ol-popup-closer"></a>
+      <div id="popup-content"></div>
+  </div>   -->
+
+    <div id="logo">
+      <img src="https://geospatial.umd.edu/themes/custom/bsos_bootstrap/images/umd-globe.svg">
+      </img>
+    </div>
+    <div id="title">
+      <p class="big" style="font-size:21px"><b>COVID-19 World Survey Map</b></p>
+
+    </div>
+    <div id="legende">
+      <p class="small" style="font-size:15px"><b>&nbsp;&nbsp;&nbsp;Legend:</b></p>
+      <p class="small" style="font-size:12px">&nbsp;&nbsp;&nbsp;&nbsp;Percentage of People with COVID-like Symptoms:</p>
+      <p class="tiny" style="font-size:10px">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(Based on Facebook Surveys)</p>
+      <div class="udiv_legende" id="legende_1">
+        &nbsp;&nbsp;
+        <img src="img/legend.png" width="50%" height="50%" style="opacity:0.7">
+        </img>
+
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+
+
+
+
+
+
+  <!-- The line below is only needed for old environments like Internet Explorer and Android 4.x -->
+  <script
+    src="https://cdn.polyfill.io/v2/polyfill.min.js?features=requestAnimationFrame,Element.prototype.classList,URL"></script>
+  <script src="https://openlayers.org/en/v6.1.1/build/ol.js"></script>
+  <script>
+    // TEMP sidebar-v2 requires ol.inherits which was removed in ol v6.0
+    if (window.ol && !window.ol.inherits) {
+      ol.inherits = function inherits(childCtor, parentCtor) {
+        childCtor.prototype = Object.create(parentCtor.prototype);
+        childCtor.prototype.constructor = childCtor;
+      }
+    }
+  </script>
+  <script src="https://rawgit.com/Turbo87/sidebar-v2/master/js/ol3-sidebar.js"></script>
+  <script src="https://unpkg.com/ol-popup@4.0.0"></script>
+  <script src="dist/ol-layerswitcher.js"></script>
+  <script src="sidebar.js"></script>
+</body>
+
+</html>
