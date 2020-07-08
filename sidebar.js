@@ -380,7 +380,16 @@
 
             var url_covid = signalUrlCreator("covid", "smoothed", td_list[5], td_list[6], enddate);
             var url_flu = signalUrlCreator("flu", "smoothed", td_list[5], td_list[6], enddate);
-            var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
+            var url_covid_cases;
+
+            // US has a different naming order. Full state names are in  td_list[3].
+            // For the rest of the world td_list[6] has the corrent name
+            if(td_list[5] == "United States of America") {
+              var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
+            }
+            else {
+              var url_covid_cases = casesUrlCreator(td_list[5], td_list[6], enddate);
+            }
 
             //Regional Covid Trace
             plotCreator("smooth", url_covid, url_flu, url_covid_cases);
@@ -487,7 +496,14 @@
 
             var url_covid = signalUrlCreator("covid", "daily", td_list[5], td_list[6], enddate);
             var url_flu = signalUrlCreator("flu", "daily", td_list[5], td_list[6], enddate);
-            var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
+            var url_covid_cases;
+
+            if(td_list[5] == "United States of America") {
+              var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
+            }
+            else {
+              var url_covid_cases = casesUrlCreator(td_list[5], td_list[6], enddate);
+            }
 
             //Regional Covid Trace
             plotCreator("unw", url_covid, url_flu, url_covid_cases);
@@ -608,7 +624,14 @@
 
             var url_covid = signalUrlCreator("covid", "daily", td_list[5], td_list[6], enddate);
             var url_flu = signalUrlCreator("flu", "daily", td_list[5], td_list[6], enddate);
-            var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
+            var url_covid_cases;
+
+            if(td_list[5] == "United States of America") {
+              var url_covid_cases = casesUrlCreator(td_list[5], td_list[3], enddate);
+            }
+            else {
+              var url_covid_cases = casesUrlCreator(td_list[5], td_list[6], enddate);
+            }
     
             //Regional Covid Trace
             plotCreator("live", url_covid, url_flu, url_covid_cases);
@@ -708,6 +731,7 @@ function casesUrlCreator(country, region, endDate) {
   if (region == null) {
     //Country level URL
     url = first.concat(place, dateRange);
+    console.log(url);
     return url;
   }
   else { 
